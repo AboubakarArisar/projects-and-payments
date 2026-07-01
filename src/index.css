@@ -1,0 +1,106 @@
+/* index.css — Hisaab design system */
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+/* ---------------------------------------------------------------- */
+/* Design tokens (dark-first). Edit here to retheme surfaces.        */
+/* ---------------------------------------------------------------- */
+:root {
+  --bg: 2 6 23;          /* slate-950 */
+  --surface: 15 23 42;   /* slate-900 */
+  --elevated: 30 41 59;  /* slate-800 */
+  --line: 39 51 74;      /* subtle border */
+  --ink: 226 232 240;    /* slate-200 */
+  --ink-strong: 248 250 252; /* slate-50 */
+  --muted: 148 163 184;  /* slate-400 */
+}
+
+@layer base {
+  html {
+    scrollbar-width: thin;
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-bg text-ink font-sans antialiased;
+    background-image: theme('backgroundImage.brand-radial');
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-display tracking-tight text-ink-strong;
+  }
+
+  /* Dark-friendly native date/select controls */
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.8);
+    cursor: pointer;
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl border border-line bg-surface/80 backdrop-blur-sm shadow-card;
+  }
+
+  .gradient-text {
+    @apply bg-brand-gradient bg-clip-text text-transparent;
+  }
+
+  /* Focus ring used across inputs / buttons */
+  .focus-ring {
+    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg;
+  }
+}
+
+/* ---------------------------------------------------------------- */
+/* Scrollbar                                                        */
+/* ---------------------------------------------------------------- */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgb(51 65 85 / 0.7);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(71 85 105 / 0.9);
+  background-clip: content-box;
+}
+
+/* ---------------------------------------------------------------- */
+/* Page fade transitions (kept from original)                       */
+/* ---------------------------------------------------------------- */
+.fade-enter { opacity: 0; }
+.fade-enter-active { opacity: 1; transition: opacity 300ms; }
+.fade-exit { opacity: 1; }
+.fade-exit-active { opacity: 0; transition: opacity 300ms; }
+
+/* ---------------------------------------------------------------- */
+/* SweetAlert2 — dark theme to match the app                        */
+/* ---------------------------------------------------------------- */
+.swal2-popup {
+  background: rgb(15 23 42) !important;
+  color: rgb(226 232 240) !important;
+  border: 1px solid rgb(39 51 74) !important;
+  border-radius: 1.125rem !important;
+}
+.swal2-title { color: rgb(248 250 252) !important; }
+.swal2-html-container { color: rgb(148 163 184) !important; }
+.swal2-close { color: rgb(148 163 184) !important; }
+.swal2-styled.swal2-confirm {
+  background: #3b82f6 !important;
+  border-radius: 0.625rem !important;
+}
+.swal2-styled.swal2-cancel {
+  background: rgb(30 41 59) !important;
+  border-radius: 0.625rem !important;
+}
