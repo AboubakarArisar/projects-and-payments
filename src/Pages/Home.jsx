@@ -11,6 +11,9 @@ import {
   FiDollarSign,
   FiUsers,
   FiArrowRight,
+  FiCheckSquare,
+  FiBarChart2,
+  FiShield,
 } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 
@@ -19,17 +22,18 @@ import { Logo } from "../components/ui/Logo";
 import { Button } from "../components/ui/Button";
 import { Badge } from "../components/ui/StatusBadge";
 
-import Abdullah from "../TeamPic/Abdullah.jpeg";
 import AbouBakar from "../TeamPic/AbouBakar.jpeg";
-import Faizan from "../TeamPic/Faizan.jpeg";
-import Jahanzaib from "../TeamPic/Jahanzaib.jpeg";
 
-const teamMembers = [
-  { name: "Abdullah", description: "Full Stack Dev", image: Abdullah, twitter: "https://twitter.com/", github: "https://github.com/abdullah-dev5", linkedin: "https://www.linkedin.com/" },
-  { name: "AbouBakar", description: "UI/UX Designer", image: AbouBakar, twitter: "https://twitter.com/", github: "https://github.com/", linkedin: "https://www.linkedin.com/" },
-  { name: "Faizan", description: "Full Stack Dev", image: Faizan, twitter: "https://twitter.com/", github: "https://github.com/faizanmuhammad1", linkedin: "https://www.linkedin.com/in/faizanmuhammad2/" },
-  { name: "Jahanzaib", description: "MERN Dev", image: Jahanzaib, twitter: "https://twitter.com/Jahanzaib699", github: "https://github.com/JahanzaibShaikh19", linkedin: "https://www.linkedin.com/in/jahanzaib-shaikh-9a6199215/" },
-];
+// The maker — solo full stack developer behind Hisaab.
+const maker = {
+  name: "Abou Bakar",
+  role: "Full Stack Developer",
+  image: AbouBakar,
+  bio: "I design and build web apps end to end — from the database and API to the pixels you click. Hisaab is one of the products I've built to keep projects, teams, and payments in one calm place.",
+  twitter: "https://twitter.com/",
+  github: "https://github.com/",
+  linkedin: "https://www.linkedin.com/",
+};
 
 const features = [
   {
@@ -46,6 +50,40 @@ const features = [
     icon: FiUsers,
     title: "Team management",
     text: "Add members, assign them to projects, and always know who's working on what.",
+  },
+];
+
+// What the product does for users — grounded in the app's real capabilities.
+const productServices = [
+  {
+    icon: FiTrello,
+    title: "Plan projects visually",
+    text: "Organize work across Backlog, In progress, Testing, and Done — and move projects forward on a clear status board.",
+  },
+  {
+    icon: FiDollarSign,
+    title: "Track every payment",
+    text: "Record incoming and outgoing transactions per project and keep an accurate, up-to-date ledger.",
+  },
+  {
+    icon: FiCheckSquare,
+    title: "Assign & follow tasks",
+    text: "Break projects into tasks, assign them to members, and notify people automatically by email.",
+  },
+  {
+    icon: FiUsers,
+    title: "Manage your team",
+    text: "Add members, assign them to projects, and see exactly who is responsible for what.",
+  },
+  {
+    icon: FiBarChart2,
+    title: "See the numbers",
+    text: "Dashboards for total, incoming, and outgoing payments turn your ledger into clear insights.",
+  },
+  {
+    icon: FiShield,
+    title: "Secure access",
+    text: "Protected sign-in and owner controls keep your projects, team, and money data private.",
   },
 ];
 
@@ -173,50 +211,83 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Team */}
+      {/* Product services — what you can do with the app */}
       <section className="mx-auto max-w-6xl px-6 pb-24">
         <div className="mb-10 text-center">
           <h2 className="font-display text-3xl font-bold text-ink-strong">
-            Meet the team
+            Everything you need in one workspace
           </h2>
-          <p className="mt-2 text-muted">The people who built {BRAND.name}.</p>
+          <p className="mt-2 text-muted">
+            {BRAND.name} brings your projects, team, and payments together.
+          </p>
         </div>
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {teamMembers.map((member) => (
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {productServices.map(({ icon: Icon, title, text }, i) => (
             <motion.div
-              key={member.name}
-              whileHover={{ y: -4 }}
-              className="card flex flex-col items-center p-6 text-center"
+              key={title}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: i * 0.08 }}
+              className="card p-6"
             >
-              <img
-                src={member.image}
-                alt={member.name}
-                className="h-24 w-24 rounded-full object-cover ring-2 ring-brand-500/30"
-              />
-              <h3 className="mt-4 font-semibold text-ink-strong">
-                {member.name}
+              <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-500/15 text-brand-300">
+                <Icon className="h-5 w-5" />
+              </span>
+              <h3 className="mt-4 text-lg font-semibold text-ink-strong">
+                {title}
               </h3>
-              <p className="text-sm text-muted">{member.description}</p>
-              <div className="mt-4 flex gap-3 text-muted">
-                {[
-                  { href: member.twitter, Icon: FaTwitter },
-                  { href: member.github, Icon: FaGithub },
-                  { href: member.linkedin, Icon: FaLinkedin },
-                ].map(({ href, Icon }, i) => (
-                  <a
-                    key={i}
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="transition-colors hover:text-brand-300"
-                  >
-                    <Icon size={18} />
-                  </a>
-                ))}
-              </div>
+              <p className="mt-2 text-sm text-muted">{text}</p>
             </motion.div>
           ))}
         </div>
+      </section>
+
+      {/* Maker / About */}
+      <section className="mx-auto max-w-6xl px-6 pb-24">
+        <div className="mb-10 text-center">
+          <h2 className="font-display text-3xl font-bold text-ink-strong">
+            Meet the maker
+          </h2>
+          <p className="mt-2 text-muted">The developer behind {BRAND.name}.</p>
+        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="card mx-auto flex max-w-3xl flex-col items-center gap-6 p-8 text-center sm:flex-row sm:text-left"
+        >
+          <img
+            src={maker.image}
+            alt={maker.name}
+            className="h-28 w-28 shrink-0 rounded-full object-cover ring-2 ring-brand-500/30"
+          />
+          <div>
+            <h3 className="text-xl font-semibold text-ink-strong">
+              {maker.name}
+            </h3>
+            <p className="text-sm text-brand-300">{maker.role}</p>
+            <p className="mt-3 text-sm text-muted">{maker.bio}</p>
+            <div className="mt-4 flex justify-center gap-3 text-muted sm:justify-start">
+              {[
+                { href: maker.twitter, Icon: FaTwitter },
+                { href: maker.github, Icon: FaGithub },
+                { href: maker.linkedin, Icon: FaLinkedin },
+              ].map(({ href, Icon }, i) => (
+                <a
+                  key={i}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition-colors hover:text-brand-300"
+                >
+                  <Icon size={18} />
+                </a>
+              ))}
+            </div>
+          </div>
+        </motion.div>
       </section>
 
       {/* Newsletter / CTA */}

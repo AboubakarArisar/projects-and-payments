@@ -1,19 +1,11 @@
 import { useState } from "react";
-import { Flip, ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { URL } from "../constant";
+import { notify } from "../lib/notify";
 import AuthShell from "../layouts/AuthShell";
 import { Field, Input } from "../components/ui/Field";
 import { Button } from "../components/ui/Button";
-
-const toastOpts = {
-  position: "top-right",
-  autoClose: 1800,
-  theme: "dark",
-  transition: Flip,
-};
 
 function OwnerLogin() {
   const navigate = useNavigate();
@@ -29,12 +21,12 @@ function OwnerLogin() {
       setEmail("");
       setPassword("");
       if (response.status === 200) {
-        toast.success("Login successful", toastOpts);
+        notify("Login successful", "success");
         setTimeout(() => navigate("/dashboard"), 1000);
       }
     } catch (error) {
       const msg = error.response?.data?.message || "Login failed";
-      toast.error(msg, toastOpts);
+      notify(msg, "error");
       console.error("Login failed:", msg);
     } finally {
       setIsLoading(false);
@@ -43,7 +35,6 @@ function OwnerLogin() {
 
   return (
     <AuthShell>
-      <ToastContainer />
       <h1 className="font-display text-2xl font-bold text-ink-strong">
         Owner sign in
       </h1>

@@ -50,10 +50,8 @@ export const Topbar = ({ onOpenSidebar }) => {
           />
         </div>
 
-        <div className="flex-1 sm:hidden" />
-
-        {/* User menu */}
-        <div className="relative">
+        {/* User menu — pinned to the far right */}
+        <div className="relative ml-auto">
           <button
             onClick={() => setMenuOpen((v) => !v)}
             className="flex items-center gap-2.5 rounded-xl border border-line bg-surface/60 py-1.5 pl-1.5 pr-3 text-sm hover:border-brand-500/40 focus-ring"

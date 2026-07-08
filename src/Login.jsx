@@ -1,25 +1,14 @@
 import { FaTwitter, FaFacebook, FaGoogle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { Flip, ToastContainer, toast } from "react-toastify";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import { URL } from "./constant/index";
 import { loginUser } from "./redux/actions/action";
+import { notify } from "./lib/notify";
 import AuthShell from "./layouts/AuthShell";
 import { Field, Input, Label } from "./components/ui/Field";
 import { Button } from "./components/ui/Button";
-
-const toastOpts = {
-  position: "top-right",
-  autoClose: 1800,
-  hideProgressBar: false,
-  closeOnClick: true,
-  pauseOnHover: false,
-  draggable: false,
-  theme: "dark",
-  transition: Flip,
-};
 
 const Login = () => {
   const navigate = useNavigate();
@@ -28,16 +17,33 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const notify = (message = "Not implemented yet", type = "info") => {
-    toast.dismiss();
-    toast[type](message, toastOpts);
+  // Basic client-side validation for instant, specific feedback.
+  const validate = () => {
+    const mail = email.trim();
+    if (!mail || !password) {
+      return "Please enter both your email and password.";
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) {
+      return "Please enter a valid email address.";
+    }
+    return null;
   };
 
   const handleLogin = async (e) => {
     e?.preventDefault();
+
+    const validationError = validate();
+    if (validationError) {
+      notify(validationError, "error");
+      return;
+    }
+
     setIsLoading(true);
     try {
-      const response = await axios.post(`${URL}/login`, { email, password });
+      const response = await axios.post(`${URL}/login`, {
+        email: email.trim(),
+        password,
+      });
       const { token, user } = response.data;
       if (token) {
         // Persist auth so the app shell knows who is logged in.
@@ -58,7 +64,10 @@ const Login = () => {
     } catch (error) {
       console.error("Error logging in:", error);
       const errorMessage =
-        error.response?.data?.message || "An error occurred. Please try again.";
+        error.response?.data?.message ||
+        (error.request
+          ? "Can't reach the server. Please check your connection."
+          : "Something went wrong. Please try again.");
       notify(errorMessage, "error");
     } finally {
       setIsLoading(false);
@@ -67,7 +76,6 @@ const Login = () => {
 
   return (
     <AuthShell>
-      <ToastContainer />
       <h1 className="font-display text-2xl font-bold text-ink-strong">
         Welcome back
       </h1>
