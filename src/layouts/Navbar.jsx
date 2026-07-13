@@ -1,12 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { logoutUser } from "../redux/actions/action";
 
 const Navbar = () => {
   const dispatch = useDispatch();
-  const userState = useSelector((state) => state.user);
   const location = useLocation();
   const [activeLink, setActiveLink] = useState(location.pathname);
 
@@ -53,9 +52,9 @@ const Navbar = () => {
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
-                    stroke-width="1.5"
+                    strokeWidth="1.5"
                     stroke="currentColor"
-                    class="w-6 h-6"
+                    className="w-6 h-6"
                   >
                     <path d="M6 18 18 6M6 6l12 12" />
                   </svg>

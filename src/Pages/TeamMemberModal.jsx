@@ -71,6 +71,11 @@ const TeamMemberModal = ({ member, onClose, onDelete, onEdit }) => {
     </div>
   );
 
+  Row.propTypes = {
+    label: PropTypes.string.isRequired,
+    value: PropTypes.string,
+  };
+
   return (
     <>
       <Modal

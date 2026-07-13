@@ -7,7 +7,7 @@ import { URL } from "./constant/index";
 import { loginUser } from "./redux/actions/action";
 import { notify } from "./lib/notify";
 import AuthShell from "./layouts/AuthShell";
-import { Field, Input, Label } from "./components/ui/Field";
+import { Field, Input } from "./components/ui/Field";
 import { Button } from "./components/ui/Button";
 
 const Login = () => {
@@ -132,7 +132,7 @@ const Login = () => {
       </div>
 
       <p className="mt-8 text-center text-sm text-muted">
-        Don't have an account?{" "}
+        {"Don't have an account? "}
         <button
           onClick={() => navigate("/register")}
           className="font-medium text-brand-300 hover:text-brand-200"

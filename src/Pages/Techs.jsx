@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { FaReact, FaNodeJs, FaDatabase, FaCss3Alt } from "react-icons/fa";
@@ -69,6 +70,11 @@ const sections = [
     items: [{ tech: "MongoDB", icon: <FaDatabase size={44} color="#47A248" /> }],
   },
 ];
+
+TiltCard.propTypes = {
+  tech: PropTypes.string.isRequired,
+  icon: PropTypes.node.isRequired,
+};
 
 const Techs = () => {
   const navigate = useNavigate();
