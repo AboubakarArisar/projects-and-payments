@@ -27,3 +27,5 @@ node_modules/
 .env
 .*env/
 pnpm-lock.yaml
+.vercel
+.env*
