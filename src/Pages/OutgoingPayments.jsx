@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { URL } from "../constant/index";
-import CustomLoader from "../Loader/Loader";
+import CustomLoader from "../components/tailwindLoader";
 import { TransactionTable } from "../components/TransactionTable";
 
 const OutgoingPayments = () => {

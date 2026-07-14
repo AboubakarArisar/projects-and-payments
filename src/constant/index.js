@@ -12,11 +12,3 @@ if (import.meta.env.VITE_API_URL) {
 }
 
 export { URL };
-// export const URL = "http://localhost:5000";
-export const STATUS = {
-  COMPLETED: "COMPLETED",
-  PENDING: "PENDING",
-  IN_PROGRESS: "IN_PROGRESS",
-  BACKLOG: "BACKLOG",
-  TESTING: "TESTING",
-};

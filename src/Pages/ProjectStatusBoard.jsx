@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { TrashIcon, InformationCircleIcon } from "@heroicons/react/24/outline";
+import { FiTrash2, FiInfo } from "react-icons/fi";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { URL } from "../constant";
@@ -247,7 +247,7 @@ const ProjectManagement = () => {
                                   className="rounded-lg p-1 text-muted hover:bg-rose-500/10 hover:text-rose-400"
                                   aria-label="Delete project"
                                 >
-                                  <TrashIcon className="h-5 w-5" />
+                                  <FiTrash2 className="h-5 w-5" />
                                 </motion.button>
                                 <motion.button
                                   whileHover={{ scale: 1.15 }}
@@ -263,7 +263,7 @@ const ProjectManagement = () => {
                                   className="rounded-lg p-1 text-muted hover:bg-brand-500/10 hover:text-brand-300"
                                   aria-label="Project details"
                                 >
-                                  <InformationCircleIcon className="h-5 w-5" />
+                                  <FiInfo className="h-5 w-5" />
                                 </motion.button>
                               </div>
                             </div>

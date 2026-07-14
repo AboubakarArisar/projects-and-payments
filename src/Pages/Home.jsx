@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import Swal from "sweetalert2";
 import {
@@ -105,33 +105,6 @@ const Home = () => {
     });
   };
 
-  // Scramble effect on the "Explore technologies" button
-  const TARGET_TEXT = "Explore the tech";
-  const CYCLES_PER_LETTER = 2;
-  const SHUFFLE_TIME = 25;
-  const CHARS = "!<>-_\\/[]{}—=+*^?#";
-  const intervalRef = useRef(null);
-  const [text, setText] = useState(TARGET_TEXT);
-
-  const scramble = () => {
-    let pos = 0;
-    intervalRef.current = setInterval(() => {
-      const scrambled = TARGET_TEXT.split("")
-        .map((char, index) => {
-          if (pos / CYCLES_PER_LETTER > index) return char;
-          return CHARS[Math.floor(Math.random() * CHARS.length)];
-        })
-        .join("");
-      setText(scrambled);
-      pos++;
-      if (pos >= TARGET_TEXT.length * CYCLES_PER_LETTER) stopScramble();
-    }, SHUFFLE_TIME);
-  };
-  const stopScramble = () => {
-    clearInterval(intervalRef.current || undefined);
-    setText(TARGET_TEXT);
-  };
-
   return (
     <div className="min-h-screen">
       {/* Nav */}
@@ -176,11 +149,9 @@ const Home = () => {
               <Button
                 size="lg"
                 variant="secondary"
-                onMouseEnter={scramble}
-                onMouseLeave={stopScramble}
                 onClick={() => navigate("/techs")}
               >
-                {text}
+                Explore the tech
               </Button>
             </div>
           </motion.div>
