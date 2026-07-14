@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useTitle } from "../hooks/useTitle";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { FiUserPlus, FiMail, FiBriefcase } from "react-icons/fi";
@@ -26,6 +27,7 @@ const initials = (name = "") =>
     .toUpperCase() || "?";
 
 const TeamDashboard = () => {
+  useTitle("Team");
   const navigate = useNavigate();
   const [teamMembers, setTeamMembers] = useState([]);
   const [activeTab, setActiveTab] = useState("all");

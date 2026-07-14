@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { useTitle } from "../hooks/useTitle";
 import Lottie from "react-lottie";
 import animationData from "../assets/pageNotFound.json";
 import { Logo } from "../components/ui/Logo";
@@ -11,6 +12,7 @@ const defaultOptions = {
 };
 
 const PageNotFound = () => {
+  useTitle("Page not found");
   const navigate = useNavigate();
 
   return (

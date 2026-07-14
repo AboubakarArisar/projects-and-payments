@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import { useTitle } from "../hooks/useTitle";
 import axios from "axios";
 import { URL } from "../constant/index";
 import CustomLoader from "../components/tailwindLoader";
 import { TransactionTable } from "../components/TransactionTable";
 
 const IncomingPayments = () => {
+  useTitle("Incoming payments");
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
 

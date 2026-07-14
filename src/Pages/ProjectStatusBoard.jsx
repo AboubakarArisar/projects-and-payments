@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useTitle } from "../hooks/useTitle";
 import { motion } from "framer-motion";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { FiTrash2, FiInfo } from "react-icons/fi";
@@ -10,6 +11,7 @@ import { StatusBadge } from "../components/ui/StatusBadge";
 import { formatDate } from "../lib/format";
 
 const ProjectManagement = () => {
+  useTitle("Projects");
   const [columns, setColumns] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
 

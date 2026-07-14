@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTitle } from "../hooks/useTitle";
 import Swal from "sweetalert2";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -11,6 +12,7 @@ import { Field, Input, Textarea } from "../components/ui/Field";
 import { Button } from "../components/ui/Button";
 
 function TeamMemberEntry() {
+  useTitle("Add member");
   const navigate = useNavigate();
   const [submitting, setSubmitting] = useState(false);
 

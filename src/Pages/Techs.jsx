@@ -1,4 +1,5 @@
 import React from "react";
+import { useTitle } from "../hooks/useTitle";
 import PropTypes from "prop-types";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -77,6 +78,7 @@ TiltCard.propTypes = {
 };
 
 const Techs = () => {
+  useTitle("Technology");
   const navigate = useNavigate();
   return (
     <div className="mx-auto max-w-6xl px-6 py-12">

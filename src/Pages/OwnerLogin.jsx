@@ -1,4 +1,5 @@
-﻿import { useState } from "react";
+import { useState } from "react";
+import { useTitle } from "../hooks/useTitle";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { URL } from "../constant";
@@ -8,6 +9,7 @@ import { Field, Input } from "../components/ui/Field";
 import { Button } from "../components/ui/Button";
 
 function OwnerLogin() {
+  useTitle("Owner sign in");
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -34,7 +36,7 @@ function OwnerLogin() {
   };
 
   return (
-    <AuthShell title="">
+    <AuthShell>
       <h1 className="font-display text-2xl font-bold text-ink-strong">
         Owner sign in
       </h1>
@@ -54,7 +56,7 @@ function OwnerLogin() {
           <Input
             id="owner-password"
             type="password"
-            placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+            placeholder="••••••••"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
@@ -70,7 +72,7 @@ function OwnerLogin() {
         </div>
 
         <Button type="submit" className="w-full" disabled={isLoading}>
-          {isLoading ? "Signing inâ€¦" : "Sign in"}
+          {isLoading ? "Signing in…" : "Sign in"}
         </Button>
       </form>
     </AuthShell>
@@ -78,4 +80,3 @@ function OwnerLogin() {
 }
 
 export default OwnerLogin;
-

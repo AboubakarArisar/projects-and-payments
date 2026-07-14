@@ -1,6 +1,7 @@
 import { FaTwitter, FaFacebook, FaGoogle } from "react-icons/fa";
+import { useTitle } from "./hooks/useTitle";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import { URL } from "./constant/index";
@@ -11,9 +12,9 @@ import { Field, Input } from "./components/ui/Field";
 import { Button } from "./components/ui/Button";
 
 const Login = () => {
+  useTitle("Login");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -76,7 +77,7 @@ const Login = () => {
   };
 
   return (
-    <AuthShell title="Login">
+    <AuthShell>
       <h1 className="font-display text-2xl font-bold text-ink-strong">
         Welcome back
       </h1>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useTitle } from "../hooks/useTitle";
 import { motion } from "framer-motion";
 import {
   FiArrowDownCircle,
@@ -96,6 +97,7 @@ function ProjectsPanel() {
 }
 
 const Dashboard = () => {
+  useTitle("Dashboard");
   const navigate = useNavigate();
   const [incoming, setIncoming] = useState(0);
   const [outgoing, setOutgoing] = useState(0);

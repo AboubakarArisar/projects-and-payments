@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTitle } from "../hooks/useTitle";
 import { motion } from "framer-motion";
 import Swal from "sweetalert2";
 import {
@@ -88,6 +89,7 @@ const productServices = [
 ];
 
 const Home = () => {
+  useTitle();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
 

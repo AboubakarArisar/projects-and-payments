@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTitle } from "../hooks/useTitle";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -11,6 +12,7 @@ import { Field, Input, Textarea, Select } from "../components/ui/Field";
 import { Button } from "../components/ui/Button";
 
 const TRXEntry = () => {
+  useTitle("New transaction");
   const navigate = useNavigate();
   const [submitting, setSubmitting] = useState(false);
   const [formData, setFormData] = useState({
