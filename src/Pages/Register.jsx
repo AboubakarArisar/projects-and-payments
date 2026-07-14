@@ -1,4 +1,4 @@
-/* eslint-disable react/prop-types */
+﻿/* eslint-disable react/prop-types */
 import { FaTwitter, FaFacebook, FaGoogle } from "react-icons/fa";
 import { FiCheckCircle, FiXCircle, FiLoader } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
@@ -20,7 +20,7 @@ const StatusLine = ({ status, onPick }) => {
     return (
       <p className="mt-1.5 flex items-center gap-1.5 text-xs text-muted">
         <FiLoader className="h-3.5 w-3.5 animate-spin" />
-        Checking availability…
+        Checking availabilityâ€¦
       </p>
     );
   }
@@ -160,7 +160,7 @@ const Register = () => {
     };
   }, [email]);
 
-  // Client-side validation — mirrors the backend schema rules so the user
+  // Client-side validation â€” mirrors the backend schema rules so the user
   // gets instant, specific feedback instead of a round-trip error.
   const validate = () => {
     const name = username.trim();
@@ -205,7 +205,7 @@ const Register = () => {
       });
 
       if (response.data?.success) {
-        notify("Account created — please sign in.", "success");
+        notify("Account created â€” please sign in.", "success");
         setTimeout(() => navigate("/login"), 1200);
       } else {
         notify(
@@ -215,7 +215,7 @@ const Register = () => {
       }
     } catch (error) {
       console.error("Error registering user:", error);
-      // Validation errors come back as 4xx, which axios throws — the meaningful
+      // Validation errors come back as 4xx, which axios throws â€” the meaningful
       // message lives on error.response.data.message.
       const message =
         error.response?.data?.message ||
@@ -229,7 +229,7 @@ const Register = () => {
   };
 
   return (
-    <AuthShell>
+    <AuthShell title="">
       <h1 className="font-display text-2xl font-bold text-ink-strong">
         Create your account
       </h1>
@@ -263,14 +263,14 @@ const Register = () => {
           <Input
             id="password"
             type="password"
-            placeholder="••••••••"
+            placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
         </Field>
 
         <Button type="submit" className="mt-2 w-full" disabled={isLoading}>
-          {isLoading ? "Creating…" : "Create account"}
+          {isLoading ? "Creatingâ€¦" : "Create account"}
         </Button>
       </form>
 
@@ -307,3 +307,4 @@ const Register = () => {
 };
 
 export default Register;
+

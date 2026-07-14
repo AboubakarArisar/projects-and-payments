@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { URL } from "../constant";
@@ -34,7 +34,7 @@ function OwnerLogin() {
   };
 
   return (
-    <AuthShell>
+    <AuthShell title="">
       <h1 className="font-display text-2xl font-bold text-ink-strong">
         Owner sign in
       </h1>
@@ -54,7 +54,7 @@ function OwnerLogin() {
           <Input
             id="owner-password"
             type="password"
-            placeholder="••••••••"
+            placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
@@ -70,7 +70,7 @@ function OwnerLogin() {
         </div>
 
         <Button type="submit" className="w-full" disabled={isLoading}>
-          {isLoading ? "Signing in…" : "Sign in"}
+          {isLoading ? "Signing inâ€¦" : "Sign in"}
         </Button>
       </form>
     </AuthShell>
@@ -78,3 +78,4 @@ function OwnerLogin() {
 }
 
 export default OwnerLogin;
+
