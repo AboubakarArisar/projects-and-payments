@@ -24,12 +24,12 @@ import { Badge } from "../components/ui/StatusBadge";
 
 import AbouBakar from "../TeamPic/AbouBakar.jpeg";
 
-// The maker — solo full stack developer behind Hisaab.
+// The maker — solo full stack developer behind Steward.
 const maker = {
   name: "Abou Bakar",
   role: "Full Stack Developer",
   image: AbouBakar,
-  bio: "I design and build web apps end to end — from the database and API to the pixels you click. Hisaab is one of the products I've built to keep projects, teams, and payments in one calm place.",
+  bio: "I design and build web apps end to end — from the database and API to the pixels you click. Steward is one of the products I've built to keep projects, teams, and payments in one calm place.",
   twitter: "https://twitter.com/",
   github: "https://github.com/",
   linkedin: "https://www.linkedin.com/",
