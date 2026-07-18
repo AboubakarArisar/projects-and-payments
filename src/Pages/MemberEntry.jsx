@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useTitle } from "../hooks/useTitle";
-import Swal from "sweetalert2";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { FiArrowLeft, FiCheck } from "react-icons/fi";
 import axios from "axios";
 import { URL } from "../constant";
+import { notify } from "../lib/notify";
 import { PageHeader } from "../components/ui/PageHeader";
 import { Card } from "../components/ui/Card";
 import { Field, Input, Textarea } from "../components/ui/Field";
@@ -35,29 +35,14 @@ function TeamMemberEntry() {
       });
 
       if (response.status === 201) {
-        Swal.fire({
-          title: "Member added",
-          text: `${teamMemberData.name} joined your team.`,
-          icon: "success",
-          confirmButtonColor: "#3b82f6",
-          showCancelButton: true,
-          confirmButtonText: "View team",
-          cancelButtonText: "Add another",
-        }).then((r) => {
-          if (r.isConfirmed) navigate("/teams");
-        });
-        e.target.reset();
+        notify(`${teamMemberData.name} joined your team`, "success");
+        navigate("/teams");
       } else {
         throw new Error("Failed to add team member");
       }
     } catch (error) {
       console.error("Error adding team member:", error);
-      Swal.fire({
-        title: "Error!",
-        text: "Failed to add team member",
-        icon: "error",
-        confirmButtonColor: "#e11d48",
-      });
+      notify("Failed to add team member", "error");
     } finally {
       setSubmitting(false);
     }

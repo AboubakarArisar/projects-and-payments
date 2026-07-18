@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { FiMenu, FiLogOut, FiUser, FiSettings, FiSearch } from "react-icons/fi";
@@ -19,8 +19,32 @@ const initials = (name = "") =>
 export const Topbar = ({ onOpenSidebar }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const user = useSelector((state) => state.user?.user);
   const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef(null);
+
+  // Close the user menu on route change and on any click/escape outside it,
+  // so it can never linger over another page.
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onPointer = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setMenuOpen(false);
+      }
+    };
+    const onKey = (e) => e.key === "Escape" && setMenuOpen(false);
+    document.addEventListener("mousedown", onPointer);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onPointer);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [menuOpen]);
 
   const name = user?.userName || user?.email || "Guest";
 
@@ -51,7 +75,7 @@ export const Topbar = ({ onOpenSidebar }) => {
         </div>
 
         {/* User menu — pinned to the far right */}
-        <div className="relative ml-auto">
+        <div ref={menuRef} className="relative ml-auto">
           <button
             onClick={() => setMenuOpen((v) => !v)}
             className="flex items-center gap-2.5 rounded-xl border border-line bg-surface/60 py-1.5 pl-1.5 pr-3 text-sm hover:border-brand-500/40 focus-ring"
@@ -66,18 +90,13 @@ export const Topbar = ({ onOpenSidebar }) => {
 
           <AnimatePresence>
             {menuOpen && (
-              <>
-                <div
-                  className="fixed inset-0 z-10"
-                  onClick={() => setMenuOpen(false)}
-                />
-                <motion.div
-                  initial={{ opacity: 0, y: -6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -6 }}
-                  transition={{ duration: 0.15 }}
-                  className="absolute right-0 z-20 mt-2 w-52 overflow-hidden rounded-xl border border-line bg-surface shadow-card"
-                >
+              <motion.div
+                initial={{ opacity: 0, y: -6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.15 }}
+                className="absolute right-0 z-20 mt-2 w-52 overflow-hidden rounded-xl border border-line bg-surface shadow-card"
+              >
                   <div className="border-b border-line px-4 py-3">
                     <p className="truncate text-sm font-medium text-ink-strong">
                       {name}
@@ -110,8 +129,7 @@ export const Topbar = ({ onOpenSidebar }) => {
                       Log out
                     </button>
                   </div>
-                </motion.div>
-              </>
+              </motion.div>
             )}
           </AnimatePresence>
         </div>

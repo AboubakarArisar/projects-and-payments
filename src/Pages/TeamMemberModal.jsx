@@ -132,6 +132,10 @@ const TeamMemberModal = ({ member, onClose, onDelete, onEdit }) => {
             member={editedMember}
             projects={projects}
             onClose={() => setAssignModalOpen(false)}
+            onAssigned={() => {
+              setAssignModalOpen(false);
+              onClose();
+            }}
           />
         )}
       </AnimatePresence>

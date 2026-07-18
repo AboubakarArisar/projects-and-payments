@@ -1,13 +1,13 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
-import Swal from "sweetalert2";
 import { URL } from "../constant";
+import { notify } from "../lib/notify";
 import { Modal } from "../components/ui/Modal";
 import { Field, Select } from "../components/ui/Field";
 import { Button } from "../components/ui/Button";
 
-const AssignmentModal = ({ member, projects, onClose }) => {
+const AssignmentModal = ({ member, projects, onClose, onAssigned }) => {
   const [selectedProject, setSelectedProject] = useState("");
   const [isAssigning, setIsAssigning] = useState(false);
 
@@ -24,24 +24,14 @@ const AssignmentModal = ({ member, projects, onClose }) => {
         isWorking: true,
       });
       if (response.status === 200) {
-        Swal.fire({
-          title: "Assigned!",
-          text: "Project assigned successfully.",
-          icon: "success",
-          confirmButtonColor: "#3b82f6",
-        });
-        onClose();
+        notify("Project assigned successfully", "success");
+        onAssigned(); // close this modal AND the member modal behind it
       } else {
         throw new Error("Failed to assign project.");
       }
     } catch (error) {
       console.error("Error assigning project:", error);
-      Swal.fire({
-        title: "Error!",
-        text: "Failed to assign project. Please try again later.",
-        icon: "error",
-        confirmButtonColor: "#e11d48",
-      });
+      notify("Failed to assign project. Please try again.", "error");
     } finally {
       setIsAssigning(false);
     }
@@ -94,6 +84,7 @@ AssignmentModal.propTypes = {
   }).isRequired,
   projects: PropTypes.array.isRequired,
   onClose: PropTypes.func.isRequired,
+  onAssigned: PropTypes.func.isRequired,
 };
 
 export default AssignmentModal;

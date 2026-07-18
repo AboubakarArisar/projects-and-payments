@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useTitle } from "../hooks/useTitle";
-import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { FiArrowLeft, FiCheck } from "react-icons/fi";
 import { URL } from "../constant/index";
+import { notify } from "../lib/notify";
 import { PageHeader } from "../components/ui/PageHeader";
 import { Card } from "../components/ui/Card";
 import { Field, Input, Textarea, Select } from "../components/ui/Field";
@@ -38,37 +38,12 @@ const TRXEntry = () => {
         description: formData.description,
       });
 
-      Swal.fire({
-        title: "Transaction added",
-        icon: "success",
-        showCancelButton: true,
-        confirmButtonColor: "#3b82f6",
-        cancelButtonColor: "#334155",
-        confirmButtonText: "View transaction",
-        cancelButtonText: "Add another",
-      }).then((result) => {
-        setFormData({
-          projectName: "",
-          projectAmount: "",
-          transactionType: "",
-          description: "",
-        });
-        if (result.isConfirmed) {
-          navigate(
-            response.data.transactionType === "IN"
-              ? "/incomingPayments"
-              : "/outgoingPayments"
-          );
-        }
-      });
+      notify("Transaction added", "success");
+      const type = response.data?.transactionType || formData.transactionType;
+      navigate(type === "IN" ? "/incomingPayments" : "/outgoingPayments");
     } catch (error) {
       console.error("Error creating transaction entry:", error);
-      Swal.fire({
-        title: "Error",
-        text: "Failed to add transaction entry",
-        icon: "error",
-        confirmButtonColor: "#e11d48",
-      });
+      notify("Failed to add transaction entry", "error");
     } finally {
       setSubmitting(false);
     }

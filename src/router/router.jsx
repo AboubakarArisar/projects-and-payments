@@ -18,6 +18,7 @@ const TotalPayments = React.lazy(() => import("../Pages/TotalPayments"));
 const ProjectStatusBoard = React.lazy(() =>
   import("../Pages/ProjectStatusBoard")
 );
+const ProjectDetail = React.lazy(() => import("../Pages/ProjectDetail"));
 const ProjectEntry = React.lazy(() => import("../Pages/ProjectEntry"));
 const MemberEntry = React.lazy(() => import("../Pages/MemberEntry"));
 
@@ -56,6 +57,7 @@ const AppLayout = () => {
             <Route path="/outgoingPayments" element={<OutgoingPayments />} />
             <Route path="/totalPayments" element={<TotalPayments />} />
             <Route path="/projects" element={<ProjectStatusBoard />} />
+            <Route path="/projects/:id" element={<ProjectDetail />} />
             <Route path="/prEntry" element={<ProjectEntry />} />
             <Route path="/addMember" element={<MemberEntry />} />
           </Route>

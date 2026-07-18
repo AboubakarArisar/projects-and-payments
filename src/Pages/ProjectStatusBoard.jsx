@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { useTitle } from "../hooks/useTitle";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { FiTrash2, FiInfo } from "react-icons/fi";
+import { FiTrash2, FiInfo, FiArrowUpRight } from "react-icons/fi";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { URL } from "../constant";
@@ -12,6 +13,7 @@ import { formatDate } from "../lib/format";
 
 const ProjectManagement = () => {
   useTitle("Projects");
+  const navigate = useNavigate();
   const [columns, setColumns] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -242,6 +244,15 @@ const ProjectManagement = () => {
                                 </p>
                               </div>
                               <div className="flex shrink-0 flex-col gap-2">
+                                <motion.button
+                                  whileHover={{ scale: 1.15 }}
+                                  whileTap={{ scale: 0.85 }}
+                                  onClick={() => navigate(`/projects/${item.id}`)}
+                                  className="rounded-lg p-1 text-muted hover:bg-brand-500/10 hover:text-brand-300"
+                                  aria-label="Open project"
+                                >
+                                  <FiArrowUpRight className="h-5 w-5" />
+                                </motion.button>
                                 <motion.button
                                   whileHover={{ scale: 1.15 }}
                                   whileTap={{ scale: 0.85 }}
