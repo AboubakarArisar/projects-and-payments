@@ -8,6 +8,20 @@ const Footer = () => {
         <p>
           &copy; {currentYear} {BRAND.name}. All rights reserved.
         </p>
+          <p className="border-b border-rule py-4 text-center text-xs leading-5 text-muted">
+          Partner:{" "}
+          <a
+            href="https://www.consulics.com"
+            target="_blank"
+            rel="noopener"
+            className="font-bold text-ink hover:underline"
+          >
+            Consulics | IRS Authorized Form 2290 &amp; HVUT E-File Provider
+          </a>{" "}
+          — Consulics is an IRS Authorized Form 2290 and Form 8849 e-file
+          provider helping truck owners, fleets, and tax professionals file HVUT
+          taxes online.
+        </p>
         <p className="flex items-center gap-1.5">
           Crafted with <span className="text-rose-400">&#10084;</span> for busy teams
         </p>
