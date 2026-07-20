@@ -10,6 +10,7 @@ import {
   FiPlusCircle,
   FiUserPlus,
   FiFilePlus,
+  FiCpu,
 } from "react-icons/fi";
 import { Logo } from "../components/ui/Logo";
 import { cn } from "../lib/cn";
@@ -22,6 +23,10 @@ const nav = [
       { to: "/projects", label: "Projects", icon: FiTrello },
       { to: "/teams", label: "Team", icon: FiUsers },
     ],
+  },
+  {
+    section: "AI",
+    items: [{ to: "/ai", label: "AI Assistant", icon: FiCpu }],
   },
   {
     section: "Payments",

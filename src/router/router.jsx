@@ -21,6 +21,7 @@ const ProjectStatusBoard = React.lazy(() =>
 const ProjectDetail = React.lazy(() => import("../Pages/ProjectDetail"));
 const ProjectEntry = React.lazy(() => import("../Pages/ProjectEntry"));
 const MemberEntry = React.lazy(() => import("../Pages/MemberEntry"));
+const AiAssistant = React.lazy(() => import("../Pages/AiAssistant"));
 
 const AppRoutes = () => {
   return (
@@ -60,6 +61,7 @@ const AppLayout = () => {
             <Route path="/projects/:id" element={<ProjectDetail />} />
             <Route path="/prEntry" element={<ProjectEntry />} />
             <Route path="/addMember" element={<MemberEntry />} />
+            <Route path="/ai" element={<AiAssistant />} />
           </Route>
         </Routes>
       </Suspense>
