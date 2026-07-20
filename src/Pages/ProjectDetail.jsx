@@ -52,6 +52,9 @@ const ProjectDetail = () => {
   const [loading, setLoading] = useState(true);
   const [showAdd, setShowAdd] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [detailTask, setDetailTask] = useState(null);
+  const [commentText, setCommentText] = useState("");
+  const [commenting, setCommenting] = useState(false);
 
   const load = useCallback(async () => {
     try {
@@ -150,16 +153,35 @@ const ProjectDetail = () => {
     }
   };
 
-  const handleTaskDetails = (task) => {
-    Swal.fire({
-      title: task.name,
-      html: `<div style="text-align:left">
-              <p style="margin-bottom:10px">${task.description}</p>
-              <p><strong>Deadline:</strong> ${formatDate(task.deadline)}</p>
-            </div>`,
-      confirmButtonColor: "#3b82f6",
-      showCloseButton: true,
+  // Replace a task everywhere it might live (board columns + open detail modal).
+  const applyTaskUpdate = (updated) => {
+    setColumns((prev) => {
+      const next = {};
+      for (const k of TASK_COLUMNS) {
+        next[k] = prev[k].map((t) => (t._id === updated._id ? updated : t));
+      }
+      return next;
     });
+    setDetailTask((cur) => (cur && cur._id === updated._id ? updated : cur));
+  };
+
+  const submitComment = async (e) => {
+    e.preventDefault();
+    if (!commentText.trim()) return;
+    setCommenting(true);
+    try {
+      const { data } = await axios.post(
+        `${URL}/tasks/${detailTask._id}/comments`,
+        { text: commentText }
+      );
+      applyTaskUpdate(data);
+      setCommentText("");
+    } catch (error) {
+      console.error("Error adding comment:", error);
+      notify("Failed to add comment", "error");
+    } finally {
+      setCommenting(false);
+    }
   };
 
   if (loading) return <CustomLoader />;
@@ -295,7 +317,7 @@ const ProjectDetail = () => {
                                 <motion.button
                                   whileHover={{ scale: 1.15 }}
                                   whileTap={{ scale: 0.85 }}
-                                  onClick={() => handleTaskDetails(task)}
+                                  onClick={() => setDetailTask(task)}
                                   className="rounded-lg p-1 text-muted hover:bg-brand-500/10 hover:text-brand-300"
                                   aria-label="Task details"
                                 >
@@ -361,6 +383,69 @@ const ProjectDetail = () => {
               </Button>
             </div>
           </form>
+        </Modal>
+      )}
+
+      {detailTask && (
+        <Modal
+          title={detailTask.name}
+          subtitle={`Due ${formatDate(detailTask.deadline)}`}
+          onClose={() => {
+            setDetailTask(null);
+            setCommentText("");
+          }}
+        >
+          <div className="space-y-4">
+            <StatusBadge status={detailTask.status} />
+            <p className="whitespace-pre-wrap text-sm text-ink">
+              {detailTask.description}
+            </p>
+
+            <div className="border-t border-line pt-4">
+              <p className="mb-3 text-sm font-medium text-ink">
+                Comments{" "}
+                <span className="text-muted">
+                  ({detailTask.comments?.length || 0})
+                </span>
+              </p>
+
+              <div className="max-h-64 space-y-3 overflow-y-auto">
+                {(detailTask.comments || []).length === 0 ? (
+                  <p className="text-sm text-muted">No comments yet.</p>
+                ) : (
+                  detailTask.comments.map((c) => (
+                    <div key={c._id} className="rounded-xl border border-line p-3">
+                      <div className="mb-1 flex items-center justify-between">
+                        <span className="text-xs font-semibold text-ink">
+                          {c.author}
+                        </span>
+                        <span className="text-[11px] text-muted">
+                          {formatDate(c.createdAt)}
+                        </span>
+                      </div>
+                      <p className="whitespace-pre-wrap text-sm text-ink">
+                        {c.text}
+                      </p>
+                    </div>
+                  ))
+                )}
+              </div>
+
+              <form onSubmit={submitComment} className="mt-3">
+                <Textarea
+                  rows="2"
+                  value={commentText}
+                  onChange={(e) => setCommentText(e.target.value)}
+                  placeholder="Write a comment…"
+                />
+                <div className="mt-2 flex justify-end">
+                  <Button type="submit" size="sm" disabled={commenting || !commentText.trim()}>
+                    {commenting ? "Posting…" : "Comment"}
+                  </Button>
+                </div>
+              </form>
+            </div>
+          </div>
         </Modal>
       )}
     </>

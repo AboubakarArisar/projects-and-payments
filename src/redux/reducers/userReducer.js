@@ -11,7 +11,7 @@ const userReducer = (state = initialState, action) => {
           id: action.payload.id,
           email: action.payload.email,
           userName: action.payload.userName,
-          type: action.payload.userType,
+          type: action.payload.type,
           token: action.payload.token,
           expire: action.payload.expire,
         },

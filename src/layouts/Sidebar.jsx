@@ -58,7 +58,9 @@ const linkClass = ({ isActive }) =>
 export const SidebarContent = ({ onNavigate }) => (
   <div className="flex h-full flex-col gap-6">
     <div className="px-2 pt-1">
-      <Logo />
+      <NavLink to="/dashboard" onClick={onNavigate} aria-label="Go to dashboard">
+        <Logo />
+      </NavLink>
     </div>
 
     <nav className="flex-1 space-y-6 overflow-y-auto pr-1">

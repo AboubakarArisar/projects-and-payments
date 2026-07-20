@@ -9,6 +9,7 @@ import Techs from "../Pages/Techs";
 import OwnerLogin from "../Pages/OwnerLogin";
 import Register from "../Pages/Register";
 import ProtectedRoute from "../Auth/ProtectedRoute";
+import GuestRoute from "../Auth/GuestRoute";
 const Dashboard = React.lazy(() => import("../Pages/Dashboard"));
 const TeamDashboard = React.lazy(() => import("../Pages/TeamDashboard"));
 const TRXEntry = React.lazy(() => import("../Pages/TRXEntry"));
@@ -27,11 +28,13 @@ const AppRoutes = () => {
   return (
     <Router>
       <Routes>
-        {/* Public */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/owner/login" element={<OwnerLogin />} />
-        <Route path="/" element={<Home />} />
+        {/* Public — but a signed-in user is redirected to the app */}
+        <Route element={<GuestRoute />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/owner/login" element={<OwnerLogin />} />
+          <Route path="/" element={<Home />} />
+        </Route>
         <Route path="/techs" element={<Techs />} />
 
         {/* Protected app — redirects to /login when not authenticated */}

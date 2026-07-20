@@ -3,8 +3,9 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
-import { FiMenu, FiLogOut, FiUser, FiSettings, FiSearch } from "react-icons/fi";
+import { FiMenu, FiLogOut, FiUser, FiSettings } from "react-icons/fi";
 import { logoutUser } from "../redux/actions/action";
+import { GlobalSearch } from "./GlobalSearch";
 import { cn } from "../lib/cn";
 
 const initials = (name = "") =>
@@ -65,14 +66,8 @@ export const Topbar = ({ onOpenSidebar }) => {
           <FiMenu className="h-5 w-5" />
         </button>
 
-        {/* Search (visual for now) */}
-        <div className="hidden max-w-md flex-1 items-center gap-2 rounded-xl border border-line bg-surface/60 px-3 py-2 text-sm text-muted sm:flex">
-          <FiSearch className="h-4 w-4" />
-          <input
-            className="w-full bg-transparent text-ink placeholder:text-muted/60 focus:outline-none"
-            placeholder="Search projects, members, transactions…"
-          />
-        </div>
+        {/* Global search across projects, members, and transactions */}
+        <GlobalSearch />
 
         {/* User menu — pinned to the far right */}
         <div ref={menuRef} className="relative ml-auto">

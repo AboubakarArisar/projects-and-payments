@@ -91,8 +91,8 @@ const ListField = ({ title, items }) => (
   </Section>
 );
 
-// Big input + generate button.
-function InputPanel({ label, hint, placeholder, value, onChange, onRun, loading, cta }) {
+// Big input + generate button, with an optional control slot (e.g. tone).
+function InputPanel({ label, hint, placeholder, value, onChange, onRun, loading, cta, extra }) {
   return (
     <Card className="p-6">
       <Field label={label} htmlFor="ai-input" hint={hint}>
@@ -105,8 +105,9 @@ function InputPanel({ label, hint, placeholder, value, onChange, onRun, loading,
           onChange={(e) => onChange(e.target.value)}
         />
       </Field>
-      <div className="flex justify-end">
-        <Button onClick={onRun} disabled={loading || !value.trim()}>
+      <div className="flex flex-wrap items-center gap-3">
+        {extra && <div className="mr-auto">{extra}</div>}
+        <Button className={extra ? "" : "ml-auto"} onClick={onRun} disabled={loading || !value.trim()}>
           <FiZap className="h-4 w-4" />
           {loading ? "Generating…" : cta}
         </Button>
@@ -114,6 +115,18 @@ function InputPanel({ label, hint, placeholder, value, onChange, onRun, loading,
     </Card>
   );
 }
+
+// Compact inline tone picker for prose generators.
+const TonePicker = ({ value, onChange }) => (
+  <div className="flex items-center gap-2">
+    <span className="text-sm text-muted">Tone</span>
+    <Select value={value} onChange={onChange} className="w-40">
+      {TONES.map((t) => (
+        <option key={t} value={t}>{t}</option>
+      ))}
+    </Select>
+  </div>
+);
 
 // Result shell: chips left, actions + New right.
 function ResultCard({ chips, onNew, actions, children }) {
@@ -362,15 +375,16 @@ function RequirementAnalyzer() {
 function ProposalGenerator() {
   const hist = useAiHistory("proposal");
   const [input, setInput] = useState("");
+  const [tone, setTone] = useState(TONES[0]);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState(null);
 
   const run = async () => {
     setLoading(true);
     try {
-      const d = await postAi("proposal", { text: input });
+      const d = await postAi("proposal", { text: input, tone });
       setData(d);
-      hist.save(input.slice(0, 50), input, d);
+      hist.save(`${tone} · ${input.slice(0, 40)}`, input, d);
     } catch (e) {
       aiError(e, "Failed to generate proposal");
     } finally {
@@ -401,20 +415,24 @@ function ProposalGenerator() {
     <Panel>
       <InputPanel
         label="Project brief or requirements"
-        hint="Paste what the client wants. Gemini drafts a professional proposal you can copy and send."
+        hint="Paste what the client wants. Pick a tone, and Gemini drafts a proposal you can copy and send."
         placeholder="e.g. Client needs a landing page + booking form for a dental clinic, live in 3 weeks…"
         value={input}
         onChange={setInput}
         onRun={run}
         loading={loading}
         cta="Generate proposal"
+        extra={<TonePicker value={tone} onChange={(e) => setTone(e.target.value)} />}
       />
       <HistoryBar history={hist.history} onSelect={load} onRemove={hist.remove} onClear={hist.clear} />
 
       {data && (
         <ResultCard
           onNew={reset}
-          chips={[<Badge key="t" tone="neutral">Timeline: {data.timeline}</Badge>]}
+          chips={[
+            <Badge key="tone" tone="brand">{tone}</Badge>,
+            <Badge key="t" tone="neutral">Timeline: {data.timeline}</Badge>,
+          ]}
           actions={
             <Button variant="secondary" size="sm" onClick={() => copy(asText())}>
               <FiCopy className="h-3.5 w-3.5" /> Copy

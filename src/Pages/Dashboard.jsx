@@ -9,6 +9,10 @@ import {
   FiUserPlus,
   FiFilePlus,
   FiArrowRight,
+  FiTrello,
+  FiCheckSquare,
+  FiAlertTriangle,
+  FiUsers,
 } from "react-icons/fi";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -96,6 +100,87 @@ function ProjectsPanel() {
   );
 }
 
+// Small "N/A"-safe workspace KPIs derived from existing endpoints.
+function WorkspaceStats() {
+  const navigate = useNavigate();
+  const [stats, setStats] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const [projects, tasks, members] = await Promise.all([
+          axios.get(`${URL}/projects`).then((r) => r.data),
+          axios.get(`${URL}/tasks`).then((r) => r.data),
+          axios.get(`${URL}/members`).then((r) => r.data),
+        ]);
+        // Compare dates only (deadlines are date-only) so a task due *today*
+        // is not counted as overdue.
+        const todayStr = new Date().toISOString().slice(0, 10);
+        const openTasks = tasks.filter((t) => t.status !== "DONE");
+        setStats({
+          activeProjects: projects.filter((p) => p.status !== "COMPLETED").length,
+          totalProjects: projects.length,
+          openTasks: openTasks.length,
+          overdue: openTasks.filter(
+            (t) => t.deadline && String(t.deadline).slice(0, 10) < todayStr
+          ).length,
+          members: members.length,
+        });
+      } catch (e) {
+        console.error("Error fetching stats:", e);
+        setStats({ activeProjects: 0, totalProjects: 0, openTasks: 0, overdue: 0, members: 0 });
+      }
+    })();
+  }, []);
+
+  if (!stats) {
+    return (
+      <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {[0, 1, 2, 3].map((i) => (
+          <div key={i} className="card h-28 animate-pulse opacity-60" />
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <StatCard
+        label="Active projects"
+        value={stats.activeProjects}
+        tone="brand"
+        icon={<FiTrello className="h-5 w-5" />}
+        hint={`${stats.totalProjects} total`}
+        onClick={() => navigate("/projects")}
+      />
+      <StatCard
+        label="Open tasks"
+        value={stats.openTasks}
+        tone="brand"
+        icon={<FiCheckSquare className="h-5 w-5" />}
+        hint="Not yet done"
+        onClick={() => navigate("/projects")}
+      />
+      <StatCard
+        label="Overdue tasks"
+        value={stats.overdue}
+        tone={stats.overdue > 0 ? "rose" : "brand"}
+        icon={<FiAlertTriangle className="h-5 w-5" />}
+        hint={stats.overdue > 0 ? "Past their deadline" : "All on track"}
+        onClick={() => navigate("/projects")}
+      />
+      <StatCard
+        label="Team members"
+        value={stats.members}
+        tone="brand"
+        icon={<FiUsers className="h-5 w-5" />}
+        hint="On your team"
+        onClick={() => navigate("/teams")}
+      />
+    </div>
+  );
+}
+
 const Dashboard = () => {
   useTitle("Dashboard");
   const navigate = useNavigate();
@@ -172,6 +257,8 @@ const Dashboard = () => {
           onClick={() => navigate("/totalPayments")}
         />
       </div>
+
+      <WorkspaceStats />
 
       <ProjectsPanel />
 

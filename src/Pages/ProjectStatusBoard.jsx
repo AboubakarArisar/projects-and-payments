@@ -3,7 +3,7 @@ import { useTitle } from "../hooks/useTitle";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { FiTrash2, FiInfo, FiArrowUpRight } from "react-icons/fi";
+import { FiTrash2, FiInfo } from "react-icons/fi";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { URL } from "../constant";
@@ -19,12 +19,8 @@ const ProjectManagement = () => {
 
   const fetchProjects = async () => {
     try {
-      const response = await fetch(`${URL}/projects`);
-      if (!response.ok) {
-        console.error("Failed to fetch projects");
-        return;
-      }
-      const projects = await response.json();
+      const response = await axios.get(`${URL}/projects`);
+      const projects = response.data;
 
       const initialColumns = {
         BACKLOG: [],
@@ -225,15 +221,23 @@ const ProjectManagement = () => {
                               snapshot.isDragging,
                               provided.draggableProps.style
                             )}
-                            className={`rounded-xl border bg-surface p-4 transition-shadow ${
+                            className={`group rounded-xl border bg-surface p-4 transition-shadow ${
                               snapshot.isDragging
                                 ? "border-brand-500/50 shadow-glow"
                                 : "border-line hover:border-brand-500/30"
                             }`}
                           >
                             <div className="flex items-start justify-between gap-3">
-                              <div className="min-w-0">
-                                <p className="truncate font-semibold capitalize text-ink-strong">
+                              <div
+                                role="button"
+                                tabIndex={0}
+                                onClick={() => navigate(`/projects/${item.id}`)}
+                                onKeyDown={(e) =>
+                                  e.key === "Enter" && navigate(`/projects/${item.id}`)
+                                }
+                                className="min-w-0 cursor-pointer"
+                              >
+                                <p className="truncate font-semibold capitalize text-ink-strong group-hover:text-brand-200">
                                   {item.title}
                                 </p>
                                 <p className="mt-1 line-clamp-2 text-sm text-muted">
@@ -244,15 +248,6 @@ const ProjectManagement = () => {
                                 </p>
                               </div>
                               <div className="flex shrink-0 flex-col gap-2">
-                                <motion.button
-                                  whileHover={{ scale: 1.15 }}
-                                  whileTap={{ scale: 0.85 }}
-                                  onClick={() => navigate(`/projects/${item.id}`)}
-                                  className="rounded-lg p-1 text-muted hover:bg-brand-500/10 hover:text-brand-300"
-                                  aria-label="Open project"
-                                >
-                                  <FiArrowUpRight className="h-5 w-5" />
-                                </motion.button>
                                 <motion.button
                                   whileHover={{ scale: 1.15 }}
                                   whileTap={{ scale: 0.85 }}

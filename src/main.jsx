@@ -2,6 +2,7 @@ import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import { Toaster } from "react-hot-toast";
 import "./index.css";
+import "./lib/axiosAuth"; // installs the axios auth + 401 interceptors
 import AppRoutes from "./router/router.jsx";
 import store, { persistor } from "./redux/store";
 import { PersistGate } from "redux-persist/integration/react";
