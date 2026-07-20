@@ -36,6 +36,7 @@ const OutgoingPayments = () => {
       title="Outgoing payments"
       subtitle="Every expense paid out, oldest first."
       rows={rows}
+      onDeleted={(id) => setRows((r) => r.filter((t) => t._id !== id))}
     />
   );
 };

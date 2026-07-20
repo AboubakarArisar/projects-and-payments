@@ -36,6 +36,7 @@ const IncomingPayments = () => {
       title="Incoming payments"
       subtitle="Every payment received, oldest first."
       rows={rows}
+      onDeleted={(id) => setRows((r) => r.filter((t) => t._id !== id))}
     />
   );
 };

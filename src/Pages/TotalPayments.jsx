@@ -31,6 +31,7 @@ const TotalPaymentsPage = () => {
       title="All transactions"
       subtitle="Complete ledger of incoming and outgoing payments."
       rows={rows}
+      onDeleted={(id) => setRows((r) => r.filter((t) => t._id !== id))}
     />
   );
 };

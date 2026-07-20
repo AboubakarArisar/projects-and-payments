@@ -5,13 +5,17 @@ import {
   FiArrowDownLeft,
   FiArrowUpRight,
   FiInbox,
+  FiTrash2,
 } from "react-icons/fi";
+import axios from "axios";
 import { PageHeader } from "./ui/PageHeader";
 import { Card } from "./ui/Card";
 import { formatMoney } from "../lib/format";
+import { notify } from "../lib/notify";
+import { URL } from "../constant/index";
 
 // Shared table used by Incoming / Outgoing / Total payment pages.
-export const TransactionTable = ({ title, subtitle, rows }) => {
+export const TransactionTable = ({ title, subtitle, rows, onDeleted }) => {
   const showDetails = (t) =>
     Swal.fire({
       title: t.transactionTitle,
@@ -25,6 +29,26 @@ export const TransactionTable = ({ title, subtitle, rows }) => {
       confirmButtonColor: "#3b82f6",
       showCloseButton: true,
     });
+
+  const remove = async (t) => {
+    const { isConfirmed } = await Swal.fire({
+      title: "Delete this transaction?",
+      text: t.transactionTitle,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#e11d48",
+      confirmButtonText: "Delete",
+    });
+    if (!isConfirmed) return;
+    try {
+      await axios.delete(`${URL}/transactions/${t._id}`);
+      onDeleted?.(t._id);
+      notify("Transaction deleted", "success");
+    } catch (error) {
+      console.error("Error deleting transaction:", error);
+      notify("Could not delete transaction", "error");
+    }
+  };
 
   return (
     <>
@@ -46,6 +70,7 @@ export const TransactionTable = ({ title, subtitle, rows }) => {
                   <th className="px-4 py-3 text-right font-medium">Amount</th>
                   <th className="px-4 py-3 font-medium">Date</th>
                   <th className="px-4 py-3 font-medium">Time</th>
+                  <th className="px-4 py-3 font-medium sr-only">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-line">
@@ -97,6 +122,15 @@ export const TransactionTable = ({ title, subtitle, rows }) => {
                       </td>
                       <td className="whitespace-nowrap px-4 py-3 text-muted">
                         {new Date(t.transactionDate).toLocaleTimeString()}
+                      </td>
+                      <td className="px-4 py-3 text-right">
+                        <button
+                          onClick={() => remove(t)}
+                          aria-label={`Delete ${t.transactionTitle}`}
+                          className="rounded-lg p-1.5 text-muted opacity-0 transition-opacity hover:bg-rose-500/10 hover:text-rose-300 focus:opacity-100 group-hover:opacity-100"
+                        >
+                          <FiTrash2 className="h-4 w-4" />
+                        </button>
                       </td>
                     </motion.tr>
                   );
