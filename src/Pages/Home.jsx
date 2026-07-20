@@ -286,8 +286,23 @@ const Home = () => {
         </div>
       </section>
 
-      <footer className="border-t border-line px-6 py-8 text-center text-xs text-muted">
+      <footer className="border-t border-line px-6 py-8 text-center text-xs text-muted flex flex-col justify-center items-center">
         © {new Date().getFullYear()} {BRAND.name}. {BRAND.tagline}
+
+          <p className="border-b border-rule py-4 text-center text-xs leading-5 text-muted">
+          Partner:{" "}
+          <a
+            href="https://www.consulics.com"
+            target="_blank"
+            rel="noopener"
+            className="font-bold text-ink hover:underline"
+          >
+            Consulics | IRS Authorized Form 2290 &amp; HVUT E-File Provider
+          </a>{" "}
+          — Consulics is an IRS Authorized Form 2290 and Form 8849 e-file
+          provider helping truck owners, fleets, and tax professionals file HVUT
+          taxes online.
+        </p>
       </footer>
     </div>
   );
