@@ -23,13 +23,12 @@ import { Logo } from "../components/ui/Logo";
 import { Button } from "../components/ui/Button";
 import { Badge } from "../components/ui/StatusBadge";
 
-import AbouBakar from "../TeamPic/AbouBakar.jpeg";
 
 // The maker — solo full stack developer behind Steward.
 const maker = {
   name: "Abou Bakar",
   role: "Full Stack Developer",
-  image: AbouBakar,
+  image: "https://res.cloudinary.com/dnpxugbk9/image/upload/v1784748414/WhatsApp_Image_2026-07-23_at_12.26.23_AM_dl5gxl.jpg",
   bio: "I design and build web apps end to end — from the database and API to the pixels you click. Steward is one of the products I've built to keep projects, teams, and payments in one calm place.",
   twitter: "https://twitter.com/",
   github: "https://github.com/",
