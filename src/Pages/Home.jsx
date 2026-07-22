@@ -233,7 +233,7 @@ const Home = () => {
           <img
             src={maker.image}
             alt={maker.name}
-            className="h-28 w-28 shrink-0 rounded-full object-cover ring-2 ring-brand-500/30"
+            className="h-28 w-28 shrink-0 rounded-full object-cover object-top ring-2 ring-brand-500/30"
           />
           <div>
             <h3 className="text-xl font-semibold text-ink-strong">
