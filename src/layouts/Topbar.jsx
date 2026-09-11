@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
-import { FiMenu, FiLogOut, FiUser, FiSettings } from "react-icons/fi";
+import { FiMenu, FiLogOut } from "react-icons/fi";
 import { logoutUser } from "../redux/actions/action";
 import { GlobalSearch } from "./GlobalSearch";
 import { cn } from "../lib/cn";
@@ -73,6 +73,8 @@ export const Topbar = ({ onOpenSidebar }) => {
         <div ref={menuRef} className="relative ml-auto">
           <button
             onClick={() => setMenuOpen((v) => !v)}
+            aria-label="Account menu"
+            aria-expanded={menuOpen}
             className="flex items-center gap-2.5 rounded-xl border border-line bg-surface/60 py-1.5 pl-1.5 pr-3 text-sm hover:border-brand-500/40 focus-ring"
           >
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-500/15 text-xs font-bold text-brand-300 ring-1 ring-inset ring-brand-500/25">
@@ -101,18 +103,6 @@ export const Topbar = ({ onOpenSidebar }) => {
                     )}
                   </div>
                   <div className="p-1.5">
-                    {[
-                      { label: "Profile", icon: FiUser },
-                      { label: "Settings", icon: FiSettings },
-                    ].map(({ label, icon: Icon }) => (
-                      <button
-                        key={label}
-                        className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-muted hover:bg-elevated hover:text-ink"
-                      >
-                        <Icon className="h-4 w-4" />
-                        {label}
-                      </button>
-                    ))}
                     <button
                       onClick={handleLogout}
                       className={cn(

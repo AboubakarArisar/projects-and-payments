@@ -8,6 +8,8 @@ import {
   FiTrash2,
 } from "react-icons/fi";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { Button } from "./ui/Button";
 import { PageHeader } from "./ui/PageHeader";
 import { Card } from "./ui/Card";
 import { formatMoney } from "../lib/format";
@@ -16,6 +18,7 @@ import { URL } from "../constant/index";
 
 // Shared table used by Incoming / Outgoing / Total payment pages.
 export const TransactionTable = ({ title, subtitle, rows, onDeleted }) => {
+  const navigate = useNavigate();
   const showDetails = (t) =>
     Swal.fire({
       title: t.transactionTitle,
@@ -52,7 +55,7 @@ export const TransactionTable = ({ title, subtitle, rows, onDeleted }) => {
 
   return (
     <>
-      <PageHeader title={title} subtitle={subtitle} />
+      <PageHeader title={title} subtitle={subtitle} actions={<Button onClick={() => navigate("/transactionEntry")}>+ New transaction</Button>} />
       <Card className="overflow-hidden p-0">
         {rows.length === 0 ? (
           <div className="flex flex-col items-center gap-3 py-16 text-muted">

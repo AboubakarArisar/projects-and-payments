@@ -8,7 +8,7 @@ const base =
 const variants = {
   // Neutral, high-contrast primary (white on dark) — clean SaaS look, no color pop.
   primary:
-    "bg-slate-100 text-slate-900 hover:bg-white shadow-sm",
+    "bg-brand-600 text-white hover:bg-brand-500 shadow-sm",
   secondary:
     "bg-elevated text-ink border border-line hover:bg-elevated/70 hover:text-ink-strong",
   ghost: "text-muted hover:text-ink-strong hover:bg-elevated/60",

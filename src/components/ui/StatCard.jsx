@@ -40,20 +40,14 @@ export const StatCard = ({
       whileHover={{ y: -3 }}
       whileTap={{ scale: 0.99 }}
       className={cn(
-        "card group relative overflow-hidden p-5 text-left transition-colors",
+        "card group relative overflow-hidden p-5 text-left transition-colors focus-ring",
         t.ring
       )}
     >
-      <div
-        className={cn(
-          "pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-gradient-to-br to-transparent blur-2xl opacity-70",
-          t.glow
-        )}
-      />
       <div className="relative flex items-start justify-between">
         <div>
           <p className="text-sm font-medium text-muted">{label}</p>
-          <p className={cn("mt-2 font-display text-3xl font-bold", t.value)}>
+          <p className={cn("mt-3 font-display text-3xl font-extrabold tracking-tight tabular-nums", t.value)}>
             {value}
           </p>
           {hint && <p className="mt-1 text-xs text-muted">{hint}</p>}

@@ -69,12 +69,13 @@ export function GlobalSearch() {
   };
 
   return (
-    <div ref={ref} className="relative hidden max-w-md flex-1 sm:block">
+    <div ref={ref} className="relative min-w-0 max-w-md flex-1">
       <div className="flex items-center gap-2 rounded-xl border border-line bg-surface/60 px-3 py-2 text-sm text-muted transition-colors focus-within:border-brand-500/40">
         <FiSearch className="h-4 w-4 shrink-0" />
         <input
           className="w-full bg-transparent text-ink placeholder:text-muted/60 focus:outline-none"
-          placeholder="Search projects, members, transactions…"
+          placeholder="Search your workspace…"
+          aria-label="Search projects, members, and transactions"
           value={query}
           onFocus={() => {
             loadData();

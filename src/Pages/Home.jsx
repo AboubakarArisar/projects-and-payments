@@ -1,310 +1,83 @@
-import { useState } from "react";
-import { useTitle } from "../hooks/useTitle";
-import { motion } from "framer-motion";
-import Swal from "sweetalert2";
-import {
-  FaTwitter,
-  FaGithub,
-  FaLinkedin,
-} from "react-icons/fa";
-import {
-  FiTrello,
-  FiDollarSign,
-  FiUsers,
-  FiArrowRight,
-  FiCheckSquare,
-  FiBarChart2,
-  FiShield,
-} from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
-
-import { BRAND } from "../constant/brand";
+import { FiArrowRight, FiCheck, FiTrello, FiDollarSign, FiUsers, FiCpu } from "react-icons/fi";
+import { useTitle } from "../hooks/useTitle";
 import { Logo } from "../components/ui/Logo";
 import { Button } from "../components/ui/Button";
-import { Badge } from "../components/ui/StatusBadge";
+import Footer from "../layouts/Footer";
 
-
-// The maker — solo full stack developer behind Steward.
-const maker = {
-  name: "Abou Bakar",
-  role: "Full Stack Developer",
-  image: "https://res.cloudinary.com/dnpxugbk9/image/upload/v1784748414/WhatsApp_Image_2026-07-23_at_12.26.23_AM_dl5gxl.jpg",
-  bio: "I design and build web apps end to end — from the database and API to the pixels you click. Steward is one of the products I've built to keep projects, teams, and payments in one calm place.",
-  twitter: "https://twitter.com/",
-  github: "https://github.com/",
-  linkedin: "https://www.linkedin.com/",
-};
-
-const features = [
-  {
-    icon: FiTrello,
-    title: "Project board",
-    text: "Track every project from backlog to done on a drag-and-drop Kanban board built for momentum.",
-  },
-  {
-    icon: FiDollarSign,
-    title: "Payments ledger",
-    text: "Log incoming and outgoing payments, and see your net balance update in real time.",
-  },
-  {
-    icon: FiUsers,
-    title: "Team management",
-    text: "Add members, assign them to projects, and always know who's working on what.",
-  },
+const capabilities = [
+  { icon: FiTrello, title: "A clear path to done.", text: "Break projects into tasks, move work across your board, and keep deadlines in sight." },
+  { icon: FiDollarSign, title: "Keep your money in view.", text: "Record incoming and outgoing payments with one ledger and a clear net balance." },
+  { icon: FiUsers, title: "Know who's working on what.", text: "Keep your team and project assignments together, without the back-and-forth." },
+  { icon: FiCpu, title: "Turn notes into next steps.", text: "Use AI to structure client requirements, draft proposals, and turn meeting notes into tasks." },
 ];
 
-// What the product does for users — grounded in the app's real capabilities.
-const productServices = [
-  {
-    icon: FiTrello,
-    title: "Plan projects visually",
-    text: "Organize work across Backlog, In progress, Testing, and Done — and move projects forward on a clear status board.",
-  },
-  {
-    icon: FiDollarSign,
-    title: "Track every payment",
-    text: "Record incoming and outgoing transactions per project and keep an accurate, up-to-date ledger.",
-  },
-  {
-    icon: FiCheckSquare,
-    title: "Assign & follow tasks",
-    text: "Break projects into tasks, assign them to members, and notify people automatically by email.",
-  },
-  {
-    icon: FiUsers,
-    title: "Manage your team",
-    text: "Add members, assign them to projects, and see exactly who is responsible for what.",
-  },
-  {
-    icon: FiBarChart2,
-    title: "See the numbers",
-    text: "Dashboards for total, incoming, and outgoing payments turn your ledger into clear insights.",
-  },
-  {
-    icon: FiShield,
-    title: "Secure access",
-    text: "Protected sign-in and owner controls keep your projects, team, and money data private.",
-  },
-];
-
-const Home = () => {
+export default function Home() {
   useTitle();
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-
-  const handleSubscribe = () => {
-    console.log("Subscribed with email:", email);
-    setEmail("");
-    Swal.fire({
-      icon: "success",
-      title: "You're subscribed!",
-      text: "Thanks for joining the newsletter.",
-      showConfirmButton: false,
-      timer: 2000,
-      timerProgressBar: true,
-      confirmButtonColor: "#3b82f6",
-    });
-  };
-
   return (
-    <div className="min-h-screen">
-      {/* Nav */}
-      <header className="sticky top-0 z-30 border-b border-line bg-bg/70 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+    <div>
+      <header className="border-b border-line">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-5 lg:px-10">
           <Logo />
-          <div className="flex items-center gap-3">
-            <Button variant="ghost" onClick={() => navigate("/login")}>
-              Sign in
-            </Button>
-            <Button onClick={() => navigate("/register")}>
-              Get started <FiArrowRight className="h-4 w-4" />
-            </Button>
-          </div>
+          <nav aria-label="Main navigation" className="flex items-center gap-3 sm:gap-6">
+            <a href="#workspace" className="hidden text-sm text-muted hover:text-ink sm:block">The workspace</a>
+            <Button variant="ghost" onClick={() => navigate("/login")}>Sign in</Button>
+            <Button onClick={() => navigate("/register")}>Get started <FiArrowRight /></Button>
+          </nav>
         </div>
       </header>
-
-      {/* Hero */}
-      <section className="relative overflow-hidden">
-        <div className="mx-auto max-w-4xl px-6 py-24 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <div className="mb-6 flex justify-center">
-              <Badge tone="brand">✦ Projects &amp; payments, together</Badge>
-            </div>
-            <h1 className="font-display text-4xl font-bold leading-tight text-ink-strong sm:text-6xl">
-              Run your projects.
-              <br />
-              <span className="gradient-text">Track every payment.</span>
-            </h1>
-            <p className="mx-auto mt-6 max-w-2xl text-lg text-muted">
-              {BRAND.name} brings your project board, team, and money into one
-              calm dark workspace — so nothing slips through the cracks.
-            </p>
-            <div className="mt-8 flex flex-wrap justify-center gap-3">
-              <Button size="lg" onClick={() => navigate("/register")}>
-                Get started free <FiArrowRight className="h-4 w-4" />
-              </Button>
-              <Button
-                size="lg"
-                variant="secondary"
-                onClick={() => navigate("/techs")}
-              >
-                Explore the tech
-              </Button>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Features */}
-      <section className="mx-auto max-w-6xl px-6 pb-24">
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
-          {features.map(({ icon: Icon, title, text }, i) => (
-            <motion.div
-              key={title}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.1 }}
-              className="card p-6"
-            >
-              <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-500/15 text-brand-300">
-                <Icon className="h-5 w-5" />
-              </span>
-              <h3 className="mt-4 text-lg font-semibold text-ink-strong">
-                {title}
-              </h3>
-              <p className="mt-2 text-sm text-muted">{text}</p>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* Product services — what you can do with the app */}
-      <section className="mx-auto max-w-6xl px-6 pb-24">
-        <div className="mb-10 text-center">
-          <h2 className="font-display text-3xl font-bold text-ink-strong">
-            Everything you need in one workspace
-          </h2>
-          <p className="mt-2 text-muted">
-            {BRAND.name} brings your projects, team, and payments together.
-          </p>
-        </div>
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {productServices.map(({ icon: Icon, title, text }, i) => (
-            <motion.div
-              key={title}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.08 }}
-              className="card p-6"
-            >
-              <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-500/15 text-brand-300">
-                <Icon className="h-5 w-5" />
-              </span>
-              <h3 className="mt-4 text-lg font-semibold text-ink-strong">
-                {title}
-              </h3>
-              <p className="mt-2 text-sm text-muted">{text}</p>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* Maker / About */}
-      <section className="mx-auto max-w-6xl px-6 pb-24">
-        <div className="mb-10 text-center">
-          <h2 className="font-display text-3xl font-bold text-ink-strong">
-            Meet the maker
-          </h2>
-          <p className="mt-2 text-muted">The developer behind {BRAND.name}.</p>
-        </div>
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="card mx-auto flex max-w-3xl flex-col items-center gap-6 p-8 text-center sm:flex-row sm:text-left"
-        >
-          <img
-            src={maker.image}
-            alt={maker.name}
-            className="h-28 w-28 shrink-0 rounded-full object-cover object-top ring-2 ring-brand-500/30"
-          />
+      <main>
+        <section className="mx-auto grid max-w-7xl gap-10 px-5 pb-14 pt-16 lg:grid-cols-[1.35fr_0.65fr] lg:items-end lg:px-10 lg:pb-20 lg:pt-24">
           <div>
-            <h3 className="text-xl font-semibold text-ink-strong">
-              {maker.name}
-            </h3>
-            <p className="text-sm text-brand-300">{maker.role}</p>
-            <p className="mt-3 text-sm text-muted">{maker.bio}</p>
-            <div className="mt-4 flex justify-center gap-3 text-muted sm:justify-start">
-              {[
-                { href: maker.twitter, Icon: FaTwitter },
-                { href: maker.github, Icon: FaGithub },
-                { href: maker.linkedin, Icon: FaLinkedin },
-              ].map(({ href, Icon }, i) => (
-                <a
-                  key={i}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="transition-colors hover:text-brand-300"
-                >
-                  <Icon size={18} />
-                </a>
-              ))}
+            <p className="mb-6 text-sm font-semibold text-brand-300">For freelancers. For small teams. For the work ahead.</p>
+            <h1 className="max-w-4xl text-[clamp(3rem,6.5vw,6rem)] font-extrabold leading-[1.04] tracking-[-0.055em]">Less juggling.<br /><span className="text-brand-400">More building.</span></h1>
+          </div>
+          <div className="max-w-md pb-1">
+            <p className="text-lg leading-relaxed text-muted">Your projects, people, and payments. One place to keep the work moving.</p>
+            <div className="mt-7 flex flex-wrap items-center gap-5">
+              <Button size="lg" onClick={() => navigate("/register")}>Start your workspace <FiArrowRight /></Button>
+              <a href="#workspace" className="text-sm font-semibold text-ink underline decoration-line underline-offset-8 hover:decoration-brand-400">Take a look</a>
             </div>
           </div>
-        </motion.div>
-      </section>
-
-      {/* Newsletter / CTA */}
-      <section className="mx-auto max-w-4xl px-6 pb-24">
-        <div className="card relative overflow-hidden p-8 text-center sm:p-12">
-          <div className="pointer-events-none absolute inset-0 bg-brand-radial" />
-          <h2 className="relative font-display text-3xl font-bold text-ink-strong">
-            Stay in the loop
-          </h2>
-          <p className="relative mx-auto mt-2 max-w-md text-muted">
-            Get product updates and new features straight to your inbox.
-          </p>
-          <div className="relative mx-auto mt-6 flex max-w-md flex-col gap-3 sm:flex-row">
-            <input
-              type="email"
-              placeholder="you@company.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-xl border border-line bg-bg/60 px-4 py-2.5 text-sm text-ink placeholder:text-muted/60 focus-ring"
-            />
-            <Button onClick={handleSubscribe}>Subscribe</Button>
+        </section>
+        <section id="workspace" aria-label="Example Steward workspace" className="mx-auto max-w-7xl scroll-mt-6 px-5 lg:px-10">
+          <div className="overflow-hidden rounded-2xl border border-line bg-surface shadow-2xl">
+            <div className="flex items-center justify-between gap-4 border-b border-line px-5 py-4">
+              <div className="flex items-center gap-3"><FiTrello className="text-brand-400" /><span className="text-sm font-semibold">Your next big thing</span></div>
+              <span className="text-xs text-muted">Example workspace</span>
+            </div>
+            <div className="grid md:grid-cols-[170px_1fr]">
+              <div className="hidden border-r border-line p-4 md:block" aria-hidden="true">
+                <p className="mb-4 px-3 text-xs text-muted">WORKSPACE</p>
+                {["Overview", "Projects", "Team", "Payments", "AI Assistant"].map(label => <div key={label} className={`mb-1 rounded-lg px-3 py-2 text-sm ${label === "Projects" ? "bg-brand-500/15 text-brand-200" : "text-muted"}`}>{label}</div>)}
+              </div>
+              <div className="min-w-0 p-4 sm:p-7">
+                <div className="mb-6 flex flex-wrap items-center justify-between gap-3"><h2 className="text-xl font-bold">Website launch</h2><span className="rounded-full border border-line px-3 py-1 text-xs text-muted">3 tasks · 1 completed</span></div>
+                <div className="grid gap-4 sm:grid-cols-3">
+                  {[
+                    { status: "To do", name: "Write the homepage copy", description: "A clear story for the next chapter.", date: "Due Sep 18", color: "text-muted" },
+                    { status: "In progress", name: "Build the project pages", description: "Make the work speak for itself.", date: "Due Sep 16", color: "text-brand-300" },
+                    { status: "Done", name: "Define the visual direction", description: "Typography, color, and a little personality.", date: "Completed", color: "text-emerald-300" },
+                  ].map(task => <div key={task.status} className="rounded-xl bg-bg/60 p-3"><div className={`mb-4 flex items-center justify-between text-sm ${task.color}`}><span>{task.status}</span><span className="text-xs">1</span></div><div className="rounded-xl border border-line bg-surface p-4"><h3 className="text-sm font-bold leading-relaxed">{task.name}</h3><p className="mt-2 text-sm text-muted">{task.description}</p><div className="mt-6 border-t border-line pt-3 text-xs text-muted">{task.date}</div></div></div>)}
+                </div>
+                <div className="mt-6 flex items-center gap-3 text-sm text-muted"><FiCheck className="shrink-0 text-emerald-300" /> A little more progress. A little less chaos.</div>
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
-
-      <footer className="border-t border-line px-6 py-8 text-center text-xs text-muted flex flex-col justify-center items-center">
-        © {new Date().getFullYear()} {BRAND.name}. {BRAND.tagline}
-
-          <p className="border-b border-rule py-4 text-center text-xs leading-5 text-muted">
-          Partner:{" "}
-          <a
-            href="https://www.consulics.com"
-            target="_blank"
-            rel="noopener"
-            className="font-bold text-ink hover:underline"
-          >
-            Consulics | IRS Authorized Form 2290 &amp; HVUT E-File Provider
-          </a>{" "}
-          — Consulics is an IRS Authorized Form 2290 and Form 8849 e-file
-          provider helping truck owners, fleets, and tax professionals file HVUT
-          taxes online.
-        </p>
-      </footer>
+        </section>
+        <section className="mx-auto max-w-7xl px-5 py-20 lg:px-10 lg:py-28">
+          <div className="mb-10 flex flex-col justify-between gap-5 md:flex-row md:items-end"><h2 className="max-w-xl text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl">The work is complicated.<br />Your workspace should be simple.</h2><p className="max-w-sm text-muted">From the first client message to the final task, keep the important things together.</p></div>
+          <div className="grid gap-0 overflow-hidden rounded-2xl border border-line sm:grid-cols-2 lg:grid-cols-4">
+            {capabilities.map(({icon: Icon, title, text}) => <article key={title} className="border-b border-line p-7 last:border-b-0 sm:border-r lg:border-b-0"><Icon className="mb-8 h-6 w-6 text-brand-300" /><h3 className="text-lg font-bold">{title}</h3><p className="mt-3 text-sm leading-relaxed text-muted">{text}</p></article>)}
+          </div>
+        </section>
+        <section className="border-t border-line bg-surface">
+          <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-8 px-5 py-16 sm:flex-row sm:items-center lg:px-10"><div><p className="mb-3 text-sm text-brand-300">Make room for your best work.</p><h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">Your next chapter starts here.</h2></div><Button size="lg" onClick={() => navigate("/register")}>Get started free <FiArrowRight /></Button></div>
+        </section>
+      </main>
+      <Footer />
     </div>
   );
-};
+}
 
-export default Home;

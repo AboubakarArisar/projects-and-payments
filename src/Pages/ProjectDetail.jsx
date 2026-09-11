@@ -294,9 +294,9 @@ const ProjectDetail = () => {
                           >
                             <div className="flex items-start justify-between gap-3">
                               <div className="min-w-0">
-                                <p className="truncate font-semibold text-ink-strong">
+                                <button type="button" onClick={() => setDetailTask(task)} className="block max-w-full truncate text-left font-semibold text-ink-strong hover:text-brand-300 focus-ring">
                                   {task.name}
-                                </p>
+                                </button>
                                 <p className="mt-1 line-clamp-2 text-sm text-muted">
                                   {task.description}
                                 </p>
@@ -305,6 +305,9 @@ const ProjectDetail = () => {
                                 </p>
                               </div>
                               <div className="flex shrink-0 flex-col gap-2">
+                                <details className="relative">
+                                  <summary aria-label={`Actions for ${task.name}`} className="cursor-pointer list-none rounded-lg px-2 py-1 text-muted hover:bg-elevated">•••</summary>
+                                  <div className="absolute right-0 z-10 mt-1 rounded-lg border border-line bg-surface p-1 shadow-xl">
                                 <motion.button
                                   whileHover={{ scale: 1.15 }}
                                   whileTap={{ scale: 0.85 }}
@@ -312,8 +315,10 @@ const ProjectDetail = () => {
                                   className="rounded-lg p-1 text-muted hover:bg-rose-500/10 hover:text-rose-400"
                                   aria-label="Delete task"
                                 >
-                                  <FiTrash2 className="h-5 w-5" />
+                                  <span className="flex items-center gap-2 whitespace-nowrap px-2 text-sm"><FiTrash2 className="h-4 w-4" /> Delete task</span>
                                 </motion.button>
+                                  </div>
+                                </details>
                                 <motion.button
                                   whileHover={{ scale: 1.15 }}
                                   whileTap={{ scale: 0.85 }}

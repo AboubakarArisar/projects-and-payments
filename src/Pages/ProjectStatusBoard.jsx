@@ -3,11 +3,12 @@ import { useTitle } from "../hooks/useTitle";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { FiTrash2, FiInfo } from "react-icons/fi";
+import { FiTrash2, FiInfo, FiPlus } from "react-icons/fi";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { URL } from "../constant";
 import { PageHeader } from "../components/ui/PageHeader";
+import { Button } from "../components/ui/Button";
 import { StatusBadge } from "../components/ui/StatusBadge";
 import { formatDate } from "../lib/format";
 
@@ -178,6 +179,7 @@ const ProjectManagement = () => {
       <PageHeader
         title="Project board"
         subtitle="Drag a card between columns to update its status."
+        actions={<Button onClick={() => navigate("/prEntry")}><FiPlus /> New project</Button>}
       />
 
       <DragDropContext onDragEnd={onDragEnd}>

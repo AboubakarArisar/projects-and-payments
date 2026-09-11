@@ -7,9 +7,6 @@ import {
   FiDollarSign,
   FiArrowDownCircle,
   FiArrowUpCircle,
-  FiPlusCircle,
-  FiUserPlus,
-  FiFilePlus,
   FiCpu,
 } from "react-icons/fi";
 import { Logo } from "../components/ui/Logo";
@@ -17,9 +14,9 @@ import { cn } from "../lib/cn";
 
 const nav = [
   {
-    section: "Overview",
+    section: "Workspace",
     items: [
-      { to: "/dashboard", label: "Dashboard", icon: FiGrid },
+      { to: "/dashboard", label: "Overview", icon: FiGrid },
       { to: "/projects", label: "Projects", icon: FiTrello },
       { to: "/teams", label: "Team", icon: FiUsers },
     ],
@@ -34,14 +31,6 @@ const nav = [
       { to: "/totalPayments", label: "All transactions", icon: FiDollarSign },
       { to: "/incomingPayments", label: "Incoming", icon: FiArrowDownCircle },
       { to: "/outgoingPayments", label: "Outgoing", icon: FiArrowUpCircle },
-    ],
-  },
-  {
-    section: "Create",
-    items: [
-      { to: "/prEntry", label: "New project", icon: FiPlusCircle },
-      { to: "/addMember", label: "New member", icon: FiUserPlus },
-      { to: "/transactionEntry", label: "New transaction", icon: FiFilePlus },
     ],
   },
 ];
@@ -66,7 +55,7 @@ export const SidebarContent = ({ onNavigate }) => (
     <nav className="flex-1 space-y-6 overflow-y-auto pr-1">
       {nav.map((group) => (
         <div key={group.section}>
-          <p className="mb-2 px-3 text-[11px] font-semibold uppercase tracking-wider text-muted/70">
+          <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-muted">
             {group.section}
           </p>
           <div className="space-y-1">
@@ -98,8 +87,8 @@ export const SidebarContent = ({ onNavigate }) => (
     </nav>
 
     <div className="rounded-xl border border-line bg-elevated/40 p-3 text-xs text-muted">
-      <p className="font-medium text-ink">Need a hand?</p>
-      <p className="mt-0.5">Drag project cards to change their status.</p>
+      <p className="font-medium text-ink">One thing at a time.</p>
+      <p className="mt-1 leading-relaxed">Open your overview to find the next task that needs your attention.</p>
     </div>
   </div>
 );

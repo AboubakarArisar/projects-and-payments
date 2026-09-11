@@ -10,8 +10,8 @@ export default {
         xsm: '300px',
       },
       fontFamily: {
-        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        display: ['"Space Grotesk"', 'Inter', 'ui-sans-serif', 'sans-serif'],
+        sans: ['Manrope', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        display: ['Manrope', 'ui-sans-serif', 'system-ui', 'sans-serif'],
       },
       colors: {
         // Surface tokens (driven by CSS vars in index.css so the theme is
@@ -43,8 +43,8 @@ export default {
         },
       },
       borderRadius: {
-        xl: '0.875rem',
-        '2xl': '1.125rem',
+        xl: '0.625rem',
+        '2xl': '0.875rem',
       },
       boxShadow: {
         glow: '0 0 0 1px rgb(59 130 246 / 0.30), 0 8px 30px -8px rgb(59 130 246 / 0.35)',

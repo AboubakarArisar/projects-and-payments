@@ -9,7 +9,7 @@ export const PageHeader = ({ title, subtitle, actions, className }) => (
     )}
   >
     <div>
-      <h1 className="font-display text-3xl font-bold text-ink-strong">
+      <h1 className="font-display text-3xl font-extrabold tracking-tight text-ink-strong">
         {title}
       </h1>
       {subtitle && <p className="mt-1.5 text-sm text-muted">{subtitle}</p>}

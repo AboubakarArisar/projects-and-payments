@@ -1,280 +1,86 @@
 import { useState, useEffect } from "react";
-import { useTitle } from "../hooks/useTitle";
-import { motion } from "framer-motion";
-import {
-  FiArrowDownCircle,
-  FiArrowUpCircle,
-  FiDollarSign,
-  FiPlus,
-  FiUserPlus,
-  FiFilePlus,
-  FiArrowRight,
-  FiTrello,
-  FiCheckSquare,
-  FiAlertTriangle,
-  FiUsers,
-} from "react-icons/fi";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { FiArrowDownCircle, FiArrowUpCircle, FiDollarSign, FiPlus, FiArrowRight, FiCheckCircle, FiClock, FiCpu } from "react-icons/fi";
+import { useTitle } from "../hooks/useTitle";
 import { URL } from "../constant";
-import { formatMoney } from "../lib/format";
+import { formatDate, formatMoney } from "../lib/format";
 import { PageHeader } from "../components/ui/PageHeader";
 import { StatCard } from "../components/ui/StatCard";
 import { Button } from "../components/ui/Button";
-import { Card } from "../components/ui/Card";
 import { StatusBadge } from "../components/ui/StatusBadge";
 
-function ProjectsPanel() {
-  const navigate = useNavigate();
-  const [projects, setProjects] = useState(null);
-
-  useEffect(() => {
-    const getProjects = async () => {
-      try {
-        const res = await axios.get(`${URL}/projects`);
-        setProjects(res.data);
-      } catch (e) {
-        console.error("Error fetching projects:", e);
-        setProjects([]);
-      }
-    };
-    getProjects();
-  }, []);
-
-  return (
-    <section className="mt-10">
-      <div className="mb-4 flex items-center justify-between">
-        <h2 className="font-display text-xl font-semibold text-ink-strong">
-          Recent projects
-        </h2>
-        <Button variant="ghost" size="sm" onClick={() => navigate("/projects")}>
-          View board <FiArrowRight className="h-4 w-4" />
-        </Button>
-      </div>
-
-      {projects === null ? (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {[0, 1, 2].map((i) => (
-            <div key={i} className="card h-28 animate-pulse opacity-60" />
-          ))}
-        </div>
-      ) : projects.length === 0 ? (
-        <Card
-          role="button"
-          tabIndex={0}
-          onClick={() => navigate("/prEntry")}
-          onKeyDown={(e) => e.key === "Enter" && navigate("/prEntry")}
-          className="flex cursor-pointer flex-col items-center justify-center gap-3 py-12 text-center transition-colors hover:border-brand-500/40 hover:bg-elevated/30 focus-ring"
-        >
-          <p className="text-muted">No projects yet.</p>
-          <Button size="sm" onClick={() => navigate("/prEntry")}>
-            <FiPlus className="h-4 w-4" /> Create your first project
-          </Button>
-        </Card>
-      ) : (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {projects.map((project, index) => (
-            <motion.button
-              key={project._id || index}
-              type="button"
-              onClick={() => navigate("/projects")}
-              whileHover={{ y: -3 }}
-              className="card group p-5 text-left transition-colors hover:border-brand-500/40"
-            >
-              <div className="flex items-start justify-between gap-3">
-                <h3 className="font-semibold capitalize text-ink-strong">
-                  {project.name}
-                </h3>
-                <StatusBadge status={project.status} />
-              </div>
-              {project.description && (
-                <p className="mt-2 line-clamp-2 text-sm text-muted">
-                  {project.description}
-                </p>
-              )}
-            </motion.button>
-          ))}
-        </div>
-      )}
-    </section>
-  );
-}
-
-// Small "N/A"-safe workspace KPIs derived from existing endpoints.
-function WorkspaceStats() {
-  const navigate = useNavigate();
-  const [stats, setStats] = useState(null);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const [projects, tasks, members] = await Promise.all([
-          axios.get(`${URL}/projects`).then((r) => r.data),
-          axios.get(`${URL}/tasks`).then((r) => r.data),
-          axios.get(`${URL}/members`).then((r) => r.data),
-        ]);
-        // Compare dates only (deadlines are date-only) so a task due *today*
-        // is not counted as overdue.
-        const todayStr = new Date().toISOString().slice(0, 10);
-        const openTasks = tasks.filter((t) => t.status !== "DONE");
-        setStats({
-          activeProjects: projects.filter((p) => p.status !== "COMPLETED").length,
-          totalProjects: projects.length,
-          openTasks: openTasks.length,
-          overdue: openTasks.filter(
-            (t) => t.deadline && String(t.deadline).slice(0, 10) < todayStr
-          ).length,
-          members: members.length,
-        });
-      } catch (e) {
-        console.error("Error fetching stats:", e);
-        setStats({ activeProjects: 0, totalProjects: 0, openTasks: 0, overdue: 0, members: 0 });
-      }
-    })();
-  }, []);
-
-  if (!stats) {
-    return (
-      <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {[0, 1, 2, 3].map((i) => (
-          <div key={i} className="card h-28 animate-pulse opacity-60" />
-        ))}
-      </div>
-    );
-  }
-
-  return (
-    <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-      <StatCard
-        label="Active projects"
-        value={stats.activeProjects}
-        tone="brand"
-        icon={<FiTrello className="h-5 w-5" />}
-        hint={`${stats.totalProjects} total`}
-        onClick={() => navigate("/projects")}
-      />
-      <StatCard
-        label="Open tasks"
-        value={stats.openTasks}
-        tone="brand"
-        icon={<FiCheckSquare className="h-5 w-5" />}
-        hint="Not yet done"
-        onClick={() => navigate("/projects")}
-      />
-      <StatCard
-        label="Overdue tasks"
-        value={stats.overdue}
-        tone={stats.overdue > 0 ? "rose" : "brand"}
-        icon={<FiAlertTriangle className="h-5 w-5" />}
-        hint={stats.overdue > 0 ? "Past their deadline" : "All on track"}
-        onClick={() => navigate("/projects")}
-      />
-      <StatCard
-        label="Team members"
-        value={stats.members}
-        tone="brand"
-        icon={<FiUsers className="h-5 w-5" />}
-        hint="On your team"
-        onClick={() => navigate("/teams")}
-      />
-    </div>
-  );
-}
-
-const Dashboard = () => {
+export default function Dashboard() {
   useTitle("Dashboard");
   const navigate = useNavigate();
-  const [incoming, setIncoming] = useState(0);
-  const [outgoing, setOutgoing] = useState(0);
-  const [total, setTotal] = useState(0);
-
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(false);
+  const [attempt, setAttempt] = useState(0);
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get(`${URL}/transactions`);
-
-        const incomingTotal = res.data.reduce(
-          (sum, t) =>
-            t.transactionType === "IN" ? sum + t.transactionAmount : sum,
-          0
-        );
-        const outgoingTotal = res.data.reduce(
-          (sum, t) =>
-            t.transactionType === "OUT" ? sum - t.transactionAmount : sum,
-          0
-        );
-
-        setIncoming(incomingTotal);
-        setOutgoing(outgoingTotal);
-        setTotal(incomingTotal + outgoingTotal);
-      } catch (error) {
-        console.error("Error fetching data:", error);
+    const controller = new AbortController();
+    setError(false);
+    Promise.all(["projects", "tasks", "members", "transactions"].map(endpoint =>
+      axios.get(`${URL}/${endpoint}`, { signal: controller.signal }).then(response => response.data)
+    )).then(([projects, tasks, members, transactions]) => {
+      setData({ projects, tasks, members, transactions });
+    }).catch(err => {
+      if (!controller.signal.aborted) {
+        console.error("Could not load dashboard:", err);
+        setError(true);
       }
-    };
-    fetchData();
-  }, []);
+    });
+    return () => controller.abort();
+  }, [attempt]);
+
+  const header = <PageHeader title="Your workspace" subtitle="A clear view of the work ahead." actions={<Button onClick={() => navigate("/prEntry")}><FiPlus /> New project</Button>} />;
+  if (error) return <>{header}<div role="alert" className="card p-8"><h2 className="text-lg font-bold">Your workspace could not load.</h2><p className="mb-5 mt-2 text-muted">Check your connection and try again. Your saved work is unchanged.</p><Button onClick={() => setAttempt(a => a + 1)}>Try again</Button></div></>;
+  if (!data) return <>{header}<div aria-label="Loading workspace" role="status" className="grid gap-4 sm:grid-cols-3">{[0, 1, 2].map(i => <div key={i} className="card h-36 animate-pulse" />)}</div><div className="card mt-7 h-72 animate-pulse" /></>;
+
+  const { projects, tasks, members, transactions } = data;
+  const now = new Date();
+  const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+  const openTasks = tasks.filter(task => task.status !== "DONE");
+  const upcoming = openTasks.filter(task => task.deadline).sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
+  const overdue = upcoming.filter(task => String(task.deadline).slice(0, 10) < today);
+  const incoming = transactions.filter(t => t.transactionType === "IN").reduce((sum, t) => sum + Number(t.transactionAmount || 0), 0);
+  const outgoing = transactions.filter(t => t.transactionType === "OUT").reduce((sum, t) => sum + Number(t.transactionAmount || 0), 0);
 
   return (
     <>
-      <PageHeader
-        title="Dashboard"
-        subtitle="Your projects and cash flow at a glance."
-        actions={
-          <>
-            <Button variant="secondary" onClick={() => navigate("/addMember")}>
-              <FiUserPlus className="h-4 w-4" /> Add member
-            </Button>
-            <Button onClick={() => navigate("/prEntry")}>
-              <FiPlus className="h-4 w-4" /> New project
-            </Button>
-          </>
-        }
-      />
-
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <StatCard
-          label="Incoming payments"
-          value={formatMoney(incoming)}
-          tone="emerald"
-          icon={<FiArrowDownCircle className="h-5 w-5" />}
-          hint="Total received"
-          onClick={() => navigate("/incomingPayments")}
-        />
-        <StatCard
-          label="Outgoing payments"
-          value={formatMoney(Math.abs(outgoing))}
-          tone="rose"
-          icon={<FiArrowUpCircle className="h-5 w-5" />}
-          hint="Total spent"
-          onClick={() => navigate("/outgoingPayments")}
-        />
-        <StatCard
-          label="Net balance"
-          value={formatMoney(total)}
-          tone="brand"
-          icon={<FiDollarSign className="h-5 w-5" />}
-          hint="Incoming minus outgoing"
-          onClick={() => navigate("/totalPayments")}
-        />
+      {header}
+      <div className="mb-7 flex flex-wrap gap-x-6 gap-y-2 border-y border-line py-3 text-sm text-muted">
+        <span><strong className="text-ink">{projects.filter(p => p.status !== "COMPLETED").length}</strong> active projects</span>
+        <span><strong className="text-ink">{openTasks.length}</strong> open tasks</span>
+        <button onClick={() => navigate("/teams")} className="hover:text-ink focus-ring"><strong className="text-ink">{members.length}</strong> team members</button>
       </div>
-
-      <WorkspaceStats />
-
-      <ProjectsPanel />
-
-      <div className="mt-10 flex flex-wrap gap-3">
-        <Button variant="secondary" onClick={() => navigate("/prEntry")}>
-          <FiPlus className="h-4 w-4" /> Add project
-        </Button>
-        <Button variant="secondary" onClick={() => navigate("/addMember")}>
-          <FiUserPlus className="h-4 w-4" /> Add team member
-        </Button>
-        <Button variant="secondary" onClick={() => navigate("/transactionEntry")}>
-          <FiFilePlus className="h-4 w-4" /> Add transaction
-        </Button>
+      <div className="grid gap-4 sm:grid-cols-3">
+        <StatCard label="Money in" value={formatMoney(incoming)} tone="emerald" icon={<FiArrowDownCircle />} hint="Total received" onClick={() => navigate("/incomingPayments")} />
+        <StatCard label="Money out" value={formatMoney(outgoing)} tone="rose" icon={<FiArrowUpCircle />} hint="Total spent" onClick={() => navigate("/outgoingPayments")} />
+        <StatCard label="Net balance" value={formatMoney(incoming - outgoing)} icon={<FiDollarSign />} hint="Received minus spent" onClick={() => navigate("/totalPayments")} />
       </div>
+      <div className="mt-8 grid gap-6 xl:grid-cols-[1.65fr_1fr]">
+        <section className="card overflow-hidden">
+          <div className="flex items-center justify-between gap-3 border-b border-line px-5 py-4"><div className="flex items-center gap-3"><FiClock className="text-brand-300" /><h2 className="font-bold">Needs attention</h2></div><span className={`text-sm ${overdue.length ? "text-rose-300" : "text-muted"}`}>{overdue.length} overdue</span></div>
+          {upcoming.length ? <div className="divide-y divide-line">{upcoming.slice(0, 5).map(task => {
+            const projectId = typeof task.project === "object" ? task.project?._id : task.project;
+            const projectName = projects.find(p => p._id === projectId)?.name || "Task";
+            const isOverdue = String(task.deadline).slice(0, 10) < today;
+            return <button key={task._id} onClick={() => navigate(projectId ? `/projects/${projectId}` : "/projects")} className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left hover:bg-elevated/50 focus-ring"><span className="min-w-0"><span className="block truncate text-sm font-semibold">{task.name}</span><span className="mt-1 block truncate text-xs text-muted">{projectName}</span></span><span className={`shrink-0 text-xs ${isOverdue ? "text-rose-300" : "text-muted"}`}>{isOverdue ? "Overdue · " : "Due "}{formatDate(task.deadline)}</span></button>;
+          })}</div> : <div className="px-6 py-12 text-center"><FiCheckCircle className="mx-auto mb-4 h-7 w-7 text-emerald-300" /><h3 className="font-semibold">Room to focus.</h3><p className="mt-2 text-sm text-muted">No open tasks with deadlines. Open a project to plan your next steps.</p><Button variant="ghost" className="mt-4" onClick={() => navigate("/projects")}>View projects <FiArrowRight /></Button></div>}
+        </section>
+        <aside className="card flex flex-col items-start p-6">
+          <FiCpu className="mb-5 h-6 w-6 text-brand-300" /><p className="text-xs font-semibold uppercase tracking-widest text-muted">A head start</p><h2 className="mt-2 text-2xl font-extrabold leading-tight">Client notes.<br />Meet your next project.</h2><p className="mb-6 mt-3 text-sm leading-relaxed text-muted">Turn a messy brief into a clear scope, or meeting notes into tasks. Review everything before adding it.</p><Button variant="secondary" className="mt-auto" onClick={() => navigate("/ai")}>Open AI tools <FiArrowRight /></Button>
+        </aside>
+      </div>
+      <section className="mt-9">
+        <div className="mb-4 flex items-center justify-between gap-3"><h2 className="text-xl font-bold">Projects</h2><Button variant="ghost" onClick={() => navigate("/projects")}>View board <FiArrowRight /></Button></div>
+        {projects.length ? <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">{projects.slice(0, 6).map(project => {
+          const projectTasks = tasks.filter(task => (typeof task.project === "object" ? task.project?._id : task.project) === project._id);
+          const done = projectTasks.filter(task => task.status === "DONE").length;
+          return <button key={project._id} onClick={() => navigate(`/projects/${project._id}`)} className="card p-5 text-left transition-colors hover:border-brand-400/60 focus-ring"><div className="mb-4"><StatusBadge status={project.status} /></div><h3 className="truncate font-bold">{project.name}</h3><p className="mt-2 line-clamp-2 min-h-[2.5rem] text-sm text-muted">{project.description}</p><div className="mb-2 mt-5 flex justify-between gap-2 text-xs text-muted"><span>{done}/{projectTasks.length} tasks complete</span><span>{project.deadline ? formatDate(project.deadline) : "No deadline"}</span></div><progress className="project-progress" value={done} max={projectTasks.length || 1} aria-label={`${project.name} task completion`} /></button>;
+        })}</div> : <div className="card px-6 py-12 text-center"><h3 className="text-lg font-bold">A fresh start for your next project.</h3><p className="mb-5 mt-2 text-sm text-muted">Add a project, then break the work into a few clear next steps.</p><Button onClick={() => navigate("/prEntry")}><FiPlus /> Create your first project</Button></div>}
+      </section>
     </>
   );
-};
+}
 
-export default Dashboard;
